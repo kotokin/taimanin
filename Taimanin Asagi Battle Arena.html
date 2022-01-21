@@ -1,0 +1,3626 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Taimanin Asagi Battle Arena</title>  
+		<link rel="icon" type="image/png" href="data/system/misc/favicon.png" />
+
+		<script type="text/javascript" src="data/javascripts/jquery-2.1.4.min.js"></script>
+		<script type="text/javascript" src="data/javascripts/jquery-ui.min.js"></script>
+				
+		<script type="text/javascript" src="data/javascripts/jquery.selectBoxIt.min.js"></script>
+		<link type="text/css" rel='stylesheet' href='data/css/jquery.selectBoxIt.css' />
+		
+		<!-- replaces animate with native transitions, much smoother -->
+		<script type="text/javascript" src="data/javascripts/jquery.transit.min.js"></script>
+		
+		<link rel="stylesheet" href="data/css/colorbox.css" />
+		<script src="data/javascripts/jquery.colorbox-min.js"></script>
+		
+		<link type="text/css" rel="stylesheet" href="data/css/jquery.nstSlider.css" />
+		<script src="data/javascripts/jquery.nstSlider.min.js"></script>
+		
+		<script src='data/javascripts/spectrum.js'></script>
+		<link type="text/css" rel='stylesheet' href='data/css/spectrum.css' />
+				
+		<!--
+		uncomment these lines to enable the customized scrollbar in the text log
+		<link type="text/css" rel='stylesheet' href="data/css/perfect-scrollbar.css" />
+		<script src="data/javascripts/perfect-scrollbar.min.js"></script>
+		-->
+      
+		<link type="text/css" rel="stylesheet" href="data/css/asagiCss.css" />
+		
+		<script type="text/javascript">
+			//text scripts
+			var scripts=[];
+			//IE9
+			if(!$.support.transition)
+			{
+				$.fn.transition = $.fn.animate;
+				var easing="swing";
+			}
+			else
+			{
+				var easing="ease";
+			}
+			
+			//test if the browser believes it is capable of playing ogg vorbis audio files, else display an alert box
+			var a=document.createElement('audio');
+			var playable=!!(a.canPlayType && a.canPlayType('audio/ogg; codecs="vorbis"').replace(/no/, ''));
+		
+			if(!playable)
+			{
+			  alert("This application will not work correctly in this browser because it appears to be unable to play ogg vorbis audio files.\n\n Working browsers are Chrome, Firefox and Opera.");
+			}
+			//
+		</script>
+		
+		<script type="text/javascript" src="scripts/scripts.js"></script>
+					
+	</head>
+<body style="font-family:arial, sans-serif;">
+
+<div id="bodyWrapper">
+	<div id="testFontsHiddenElement">
+		abcdefghijklmnopqrstuvxyz「この私が貴様のような下劣な人間相手に…… おのれ……」
+	</div>
+		
+	<div id="loadingArea" class="pageWrapper">
+		<div id="top_filter">
+		</div>
+		<div id="loadingAreaImage">
+			<div id="top_chara_1">
+			</div>  
+			<div id="top_chara_2">
+			</div>  
+			<div id="top_chara_3">
+			</div>  
+		</div>
+		<div id="loadingAreaEffect">
+		</div>
+		<div id="gameStart" data-page="h_scenes">
+		</div>
+		<div id="logo">
+		</div>
+	</div>
+	
+	<div id="header" class="noSelection hide">
+		<div id="musicButtonsWrapper">
+			<img id="music_prev" src="data/system/misc/prev2.png" />
+			<img id="music_stop" src="data/system/misc/stop.png" />
+			<img id="music_play" src="data/system/misc/play.png" />
+			<img id="music_loop" src="data/system/misc/loop2.png" />
+			<img id="music_next" src="data/system/misc/next2.png" />
+		</div>
+		<img id="prev" data-sceneOffset="0" src="data/system/misc/back_button.png" />
+		<img id="next" data-sceneOffset="0"  src="data/system/misc/forward_button.png" />
+		<div id="pageNr" class="stylish">
+		</div>
+		<div id="mainMenu">
+			<div id="menuItemsWrapper" class="stylish">
+				<div class="menuItemWrapper">
+					<div id="menuItemBorderLeft" style="float:left;">
+					</div>
+					<div class="menuItem" id="sceneSelect" data-page="h_scenes">
+						SCENE MODE
+					</div>
+				</div>
+				<div class="menuItemWrapper">
+					<div class="menuItem" id="cgSelect" data-page="cg_list">
+						CG MODE
+					</div>
+				</div>                                      
+				<div class="menuItemWrapper">
+					<div class="menuItem" id="config">
+						CONFIG
+					</div>
+					<div id="menuItemBorderRight" style="float:left;">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div id="mainArea" class="hide">
+		
+		<div id="sceneArea" class="noSelection pageWrapper">
+			<!-- firefox currently has a bug where it only plays mono audio in the left channel in some configurations. Fixed in version 40 -->
+			<!--
+			<audio id="currentAudio" src="" autoplay>
+			</audio>
+			-->
+			<div id="history">
+				
+			</div>
+			<div id="screenArea">
+			
+			</div>
+			<div id="textWindowWrapper">
+				<div id="textWindow" class="originalBackground">
+					<div id="UIButtons">
+						<div id="window_button">
+						</div>
+						<div id="voice_button">
+						</div>
+						<div id="skip_button">
+						</div>
+						<div id="end_button">
+						</div>
+					</div>
+					<div id="textStatus">
+					</div>
+					
+					<div id="textArea" class="noSelection">
+						<div id="textHolder" class="not_select">
+	
+						</div>
+					</div>
+				</div>
+				<div id="textAreaBackground" class="hide">
+				</div>
+			</div>
+		</div>
+		
+		<div id="h_scenes" class="noSelection pageWrapper" data-viewPage="sceneArea">
+			<div id="scenes">
+	
+			</div>
+		</div>
+		
+		<div id="cgWrapper" class="noSelection pageWrapper">
+		</div>
+		
+		<div id="cg_list" class="noSelection pageWrapper" data-viewPage="cgWrapper">
+		
+		</div>
+		
+		<div id="loading" class="noSelection">
+			<img src="data/system/misc/loadNew.png" width="950" height="720" alt="Loading..." />
+		</div>
+	
+	</div>
+	
+	<div id="footer"></div>
+	
+	<!-- Lightbox content -->
+	<div id="configWrapper">
+		<div id="configSettingsWrapper" class="stylish">
+			<div id="configItemsWrapper"> 
+			
+				<div id="configHeader">
+					CONFIG
+				</div>
+				
+				<div class="sliderWrapper">
+					<div>
+						MUSIC VOLUME
+					</div>
+					<div id="musicVolume" class="nstSlider" data-range_min="0" data-range_max="100" data-cur_min="100">
+							<div class="leftGrip"></div>
+					</div>
+					<div class="rightLabel"></div>			
+				</div>
+						
+				<div class="sliderWrapper">
+					<div>
+						VOICE VOLUME
+					</div>
+					<div id="voiceVolume" class="nstSlider" data-range_min="0" data-range_max="100" data-cur_min="100">
+							<div class="leftGrip"></div>
+					</div>
+					<div class="rightLabel"></div>			
+				</div>
+				
+				<div>
+					VOICE CUT OFF <input id="voiceCutoff" type="checkbox" style="margin-left: 30px;" />
+				</div>
+				
+				<div class="sliderWrapper">
+					<div>
+						TEXT SKIP SPEED
+					</div>
+					<div class="rightLabel"></div>
+					<div style="margin-left: 4px;">
+						ms
+					</div>
+					<div id="skipSpeed" class="nstSlider" data-range_min="1" data-range_max="1000" data-cur_min="100">
+						<div class="leftGrip"></div>
+					</div>
+				</div>
+							
+				<div class="sliderWrapper">
+					<div>
+						TEXT AREA OPACITY
+					</div>
+					<div class="rightLabel">N/A</div>
+					<div style="clear:both;margin-left: 76px;">
+						ORIGINAL <input id="originalBackground" type="checkbox" checked="checked" />
+					</div>
+					<div id="textAreaOpacity" class="nstSlider" data-range_min="0" data-range_max="100" data-cur_min="80">
+						<div class="leftGrip"></div>
+					</div>
+				</div>
+				
+				<div>
+					BACKGROUND COLOR <img class="backgroundColorPicker" data-color="FFFFFF" src="data/system/misc/white.png" /> <img class="backgroundColorPicker" data-color="000000" src="data/system/misc/black.png" />
+				</div>
+				
+				<div>
+				  COPY TEXT TO CLIPBOARD (on click)  <input id="clipboardEnabled" type="checkbox" style="margin-left: 30px;" />
+				</div>
+				
+				<div style="overflow:visible;padding-top:0;">
+					<span style="line-height:20px;">
+						TEXT FONT
+					</span>
+					<select id="fontChange" name="fontChange" data-size="9">
+						<option value="arial, sans-serif" selected="selected">Default</option>
+						<optgroup label="Windows">
+							<option value="Yu Gothic">Yu Gothic</option>
+							<option value="Yu Gothic UI">Yu Gothic UI</option>
+							<option value="Yu Mincho">Yu Mincho</option>
+							<option value="メイリオ, Meiryo">Meiryo (メイリオ)</option>
+							<option value="Meiryo UI">Meiryo UI</option>
+							<option value="ＭＳ 明朝, MS Mincho">MS Mincho (ＭＳ 明朝)</option>
+							<option value="ＭＳ Ｐ明朝, MS PMincho">MS PMincho (ＭＳ Ｐ明朝)</option>
+							<option value="ＭＳ ゴシック, MS Gothic">MS Gothic (ＭＳ ゴシック)</option>
+							<option value="ＭＳ Ｐゴシック, MS PGothic">MS PGothic (ＭＳ Ｐゴシック)</option>
+							<option value="MS UI Gothic">MS UI Gothic</option>
+						</optgroup>
+						<optgroup label="Mac">
+							<option value="Osaka">Osaka</option>
+							
+							<option value="ヒラギノ明朝Pro, Hiragino Mincho Pro">Hiragino Minchō Pro W3 (ヒラギノ明朝Pro W3)</option>
+							
+							<option value="ヒラギノ明朝ProN, Hiragino Mincho ProN">Hiragino Mincho ProN W3 (ヒラギノ明朝ProN W3)</option>
+							
+							<option value="ヒラギノ丸ゴPro, Hiragino Maru Gothic Pro">Hiragino Maru Gothic Pro W4 (ヒラギノ丸ゴ Pro W4)</option>
+							<option value="ヒラギノ丸ゴProN, Hiragino Maru Gothic ProN">Hiragino Maru Gothic ProN W4 (ヒラギノ丸ゴ ProN W4)</option>
+							
+							<option value="ヒラギノ角ゴPro, Hiragino Kaku Gothic Pro">Hiragino Kaku Gothic Pro W3 (ヒラギノ角ゴPro W3)</option>
+							
+							<option value="ヒラギノ角ゴProN, Hiragino Kaku Gothic ProN">Hiragino Kaku Gothic ProN W3 (ヒラギノ角ゴProN W3)</option>
+							
+							<option value="ヒラギノ角ゴStd, Hiragino Kaku Gothic Std">Hiragino Kaku Gothic Std W8 (ヒラギノ角ゴStd W8)</option>
+							<option value="ヒラギノ角ゴStdN, Hiragino Kaku Gothic StdN">Hiragino Kaku Gothic StdN W8 (ヒラギノ角ゴStdN W8)</option>
+						</optgroup>
+						<optgroup label="Linux">					
+							<option value="TakaoPGothic,Takao Pゴシック">TakaoPGothic (Takao Pゴシック)</option>
+							
+							<option value="Droid Sans Japanese,Droid Sans Fallback,Droid Sans">Droid Sans Japanese</option>
+							
+							<option value="Ume Gothic C4,梅ゴシックC4">Ume Gothic C4,梅ゴシックC4</option>
+							<option value="Ume Gothic C5,梅ゴシックC5">Ume Gothic C5,梅ゴシックC5</option>
+							<option value="Ume Gothic O5,梅ゴシックO5">Ume Gothic O5,梅ゴシックO5</option>
+							<option value="Ume Gothic S4,梅ゴシックS4">Ume Gothic S4,梅ゴシックS4</option>
+							<option value="Ume Gothic S5,梅ゴシックS5">Ume Gothic S5,梅ゴシックS5</option>
+							<option value="Ume Gothic,梅ゴシック">Ume Gothic,梅ゴシック</option>
+							
+							<option value="Ume P Gothic C4,梅PゴシックC4">Ume P Gothic C4,梅PゴシックC4</option>
+							<option value="Ume P Gothic C5,梅PゴシックC5">Ume P Gothic C5,梅PゴシックC5</option>
+							<option value="Ume P Gothic O5,梅PゴシックO5">Ume P Gothic O5,梅PゴシックO5</option>
+							<option value="Ume P Gothic S4,梅PゴシックS4">Ume P Gothic S4,梅PゴシックS4</option>
+							<option value="Ume P Gothic S5,梅PゴシックS5">Ume P Gothic S5,梅PゴシックS5</option>
+							<option value="Ume P Gothic,梅Pゴシック">Ume P Gothic,梅Pゴシック</option>
+							
+							<option value="Ume UI Gothic,梅UIゴシック">Ume UI Gothic,梅UIゴシック</option>
+							<option value="Ume UI Gothic O5,梅UIゴシックO5">Ume UI Gothic O5,梅UIゴシックO5</option>
+							
+							<option value="Ume Mincho,梅明朝">Ume Mincho,梅明朝</option>
+							<option value="Ume Mincho S3,梅明朝S3">Ume Mincho S3,梅明朝S3</option>
+							
+							<option value="Ume P Mincho S3,梅P明朝S3">Ume P Mincho S3,梅P明朝S3</option>
+							<option value="Ume P Mincho,梅P明朝">Ume P Mincho,梅P明朝</option>
+							
+							<option value="WenQuanYi Micro Hei Mono,文泉驛等寬微米黑,文泉驿等宽微米黑">WenQuanYi Micro Hei Mono,文泉驛等寬微米黑</option>
+							<option value="WenQuanYi Micro Hei,文泉驛微米黑,文泉驿微米黑">WenQuanYi Micro Hei,文泉驛微米黑</option>					
+					
+							<option value="VL Gothic,VL ゴシック">VL Gothic,VL ゴシック</option>
+							<option value="VL PGothic,VL Pゴシック">VL PGothic,VL Pゴシック</option>
+							
+							<option value="TakaoMincho,Takao明朝">TakaoMincho,Takao明朝</option>
+							<option value="TakaoExMincho,TakaoEx明朝">TakaoExMincho,TakaoEx明朝</option>
+							<option value="TakaoPMincho,Takao P明朝">TakaoPMincho,Takao P明朝</option>
+							<option value="TakaoGothic,Takaoゴシック">TakaoGothic,Takaoゴシック</option>
+							<option value="TakaoExGothic,TakaoExゴシック">TakaoExGothic,TakaoExゴシック</option>
+							
+							<option value="IPAMincho,IPA明朝">IPAMincho,IPA明朝</option>
+							<option value="IPAPMincho,IPA P明朝">IPAPMincho,IPA P明朝</option>
+							<option value="IPAGothic,IPAゴシック">IPAGothic,IPAゴシック</option>
+							<option value="IPAPGothic,IPA Pゴシック">IPAPGothic,IPA Pゴシック</option>
+							
+							<option value="Kochi Mincho,東風明朝">Kochi Mincho,東風明朝</option>
+							<option value="Kochi Gothic,東風ゴシック">Kochi Gothic,東風ゴシック</option>
+							
+							<option value="Mona">Mona</option>
+						</optgroup>
+					</select>
+					<div id="testText">
+						「この私が貴様のような下劣な人間相手に…… おのれ……」
+					</div>
+				</div>
+				
+				<div id="itemsWrapper">
+					<div class="items">
+						BOLD TEXT  <input id="boldText" type="checkbox" style="margin-left: 30px;" />
+					</div>
+					
+					<div class="items">
+						TEXT COLOR <input type="text" name="textColor" id="textColor" value="white" style="display: none;">
+					</div>
+							
+					<div class="items">
+						PANIC: &nbsp;&nbsp;&nbsp;&nbsp; ESC
+					</div>
+				</div>
+				<div id="shortcuts" style="padding-top: 5px;padding-left:4px;">
+					<span style="line-height:1;padding-bottom:17px;">Shortcuts:</span>
+					<br />
+					<span>Text skip: </span> Ctrl
+					<br />
+					<span>Hide text window: </span> Mouse right button, Space
+					<br />
+					<span>Voice repeat: </span> Mouse middle button, V
+					<br />
+					<span>Text log: </span> Mouse wheel up, Backspace
+					<br />
+					<span>Full-screen: </span> Alt+Enter
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="preloadWrapperPermanent"></div>
+  <div id="preloadWrapper"></div>
+  <div id="copySelectionHelper"></div>
+</div>
+
+<!-- ///////////////////////// -->
+
+<script type="text/javascript">
+
+////define functions////
+function addImageToPreload(src, type, completeCallback)
+{
+  //set default value as temp
+  type=type || "temp";
+  
+  //if the resource already exist in the preload object, do nothing
+	switch(type)
+	{
+	  case "permanent":
+	    if(preload.permanent[src])
+	    {
+	      return;
+	    }
+	    break;
+	  case "temp":
+	    if(preload.temp[src])
+	    {
+	      return;
+	    }
+	    break;
+	}
+	//
+
+	var img=new Image();
+	img.className="preloadImage";
+	
+	img.onload=function(event){
+	  //after load, append the image to the preloadWrapper so it gets decoded in firefox, we do this because firefox decodes asynchronously when an image becomes "visible",
+	  //so we must do this before we use the image in the scene to make sure the drawing of the image is then done synchronously.
+	  //Otherwise there will be a brief time between image.src changes where no image is shown at all (because firefox is decoding the new image), resulting in "flickering"
+	  //the only guaranteed way of changing images without problems is to use a canvas, where decoding is guaranteed to be done synchronously according to the specification
+		switch(type)
+		{
+			case "permanent":
+				$preloadWrapperPermanent.append(this);
+				break;
+			case "temp":
+				$preloadWrapper.append(this);
+				break;
+		}
+	
+		preload.loadedResources++;
+		//console.log("Done image: "+preload.loadedResources+" of "+preload.nrOfResources);
+		if(preload.loadedResources===preload.nrOfResources)
+		{		  
+		  //console.log("Preloading done");
+		  if(completeCallback)
+		  {
+		    //console.log("Preloading callback called");
+		    completeCallback();
+		  }
+		}
+	};
+	//save the resource as temporary or permanent based on type
+	switch(type)
+	{
+	  case "permanent":
+	    preload.permanent[src]=img;
+	    break;
+	  case "temp":
+	    preload.temp[src]=img;
+	    break;
+	}
+	preload.nrOfResources++;
+	//
+	
+	img.src=src;
+}
+
+function addSoundToPreload(src, type, completeCallback)
+{
+  //set default value as temp
+  type=type || "temp";
+  
+  //if the resource already exist in the preload object, do nothing
+	switch(type)
+	{
+	  case "permanent":
+	    if(preload.permanent[src])
+	    {
+	      return;
+	    }
+	    break;
+	  case "temp":
+	    if(preload.temp[src])
+	    {
+	      return;
+	    }
+	    break;
+	}
+	//
+
+	var sound=new Audio();
+	//sound.addEventListener("canplaythrough", function(event){console.log(event.type+" : "+sound.src)});
+	
+	var eventType="canplaythrough";
+	//if it's not served locally, ie: from a web server, change the preloading strategy
+	if(location.protocol!=='file:')
+	{
+  	//only wait for the loadedmetadata event.
+	  eventType="loadedmetadata";
+  	//preload changed from "auto" to "metadata", because when served over a web server, after opening 6 simultaneous tcp connections chrome fails to load the rest.
+	  sound.preload="metadata";
+	}
+	//loaded enough to play through on current download rate  
+  //tested: IE 11, chrome, firefox with and without cache. The browsers also send a "suspend" event as the last event on large files, 
+  //but not on small ones <50kb? so you can't rely on it being fired 
+  //this equals this.readyState==4 
+	sound.addEventListener(eventType, function(event){	  
+	    preload.loadedResources++;
+			//console.log("Done sound: "+preload.loadedResources+" of "+preload.nrOfResources);
+			if(preload.loadedResources===preload.nrOfResources)
+			{
+				//console.log("Preloading done");
+				if(completeCallback)
+				{
+					//console.log("Preloading callback called");
+					completeCallback();
+				}
+			}
+	});
+	
+	switch(type)
+	{
+	  case "permanent":
+	    preload.permanent[src]=sound;
+	    break;
+	  case "temp":
+	    preload.temp[src]=sound;
+	    break;
+	}
+	preload.nrOfResources++;
+	
+	sound.src=src;
+	sound.load(); //probably not necessary
+}
+
+function preloadResources(textScript, completeCallback)
+{
+	//Reset temporary pre-loaded resources
+	preload.freeTempResources();
+	//
+	
+	//preload the resources by looping through the events object
+	for(var i=0;i<textScript.script.length;i++)
+	{
+		var src=textScript.script[i].src;
+		var type=textScript.script[i].type;
+		var id=textScript.id;
+			
+		//find valid resources to preload
+		switch(textScript.script[i].type)
+		{
+		  case "START":
+		    break;
+		  case "OUT":
+		    break;
+		  case "WAIT":
+		    break;
+			case "BG":
+			  //one instance of a BG type event has the id as "del" and no src property, therefor check
+			  if(src)
+		    {
+					src=constructImagePath(id, src);
+					if(typeof(src)!=="object")
+					{
+						addImageToPreload(src, "temp", completeCallback);
+					}
+				}
+				break;
+			case "EV":
+				src=constructImagePath(id, src);
+				if(typeof(src)!=="object")
+				{
+		  		addImageToPreload(src, "temp", completeCallback);
+				}
+				
+				break;    
+		  case "OV":
+		    if(src)
+		    {
+		      //console.log(src);
+					src=constructImagePath(id, src);
+					addImageToPreload(src, "temp", completeCallback);
+		    }
+		    //console.log(textScript.script[i]);
+		    
+		    break;
+		  case "ERROR UNKNOWN COMMAND":
+		    //console.log("Error unknown command");
+		    break;
+			case "TXT":   
+			  //circumvent the fact that that file is corrupt in the original script, so don't preload it
+				//if(src && src!=="/img/common/voice/ogg/v_SRev040_0021.6b88fef0e83c9e066596a6e839340cba.ogg") //this broke with some old changes
+				//replaced the broken file with a short silent ogg voice file instead
+				if(src)
+				{
+					src=constructSoundPath(id, src);
+					addSoundToPreload(src, "temp", completeCallback);
+				}
+				
+				break;
+			case "JUMP":
+			  break;
+			case "SELECT":
+			  break;
+			case "END":
+			  break;
+			default:
+			  console.log("Error!: unrecognized event type on preloading! event: "+textScript.script[i].type+" : line "+i);
+			  break;
+		}	
+		// 
+	}
+}
+
+function constructScene(script, afterPreloadCallback)
+{
+  //reset possible old scene variables//
+  $textWindow.removeClass("userHidden");
+  //Reset current script
+  textScript=null;
+  //reset overlay image holder to an empty jquery object
+  $overlay=$();
+	//Reset current event
+	current=0;
+	//clear screen area from images
+	$screenArea.html("");
+	//make the text window hidden if visible, scenes start with the text window hidden
+	$textWindow.addClass("hide");
+	//clear the text window from possible old text
+	$textHolder.html("");
+	//hide the history log if it is showed
+	$history.removeClass("show");
+	//clear history log from possible old text
+	$history.html("");
+	
+	//Disabled "perfect scrollbar". Although the functionality works great it is laggy as hell in firefox so I just use the native one instead
+	//Uncomment the script includes at the beginning to enable again
+	if($.fn.perfectScrollbar)
+	{
+		//if the customized scrollbar has already been created, destroy it first.
+		//Otherwise the scrollbar fails to initialize after you have cleared the $history element's html. Probably a bug in the plugin
+		if($history.hasClass("ps-container"))
+		{
+			$history.perfectScrollbar('destroy');
+		}
+		//create the customized scrollbar for the history container
+		$history.css("overflow", "hidden");
+		$history.perfectScrollbar();	
+	}
+	
+	//reset path variable at the start of every scene
+	nextPath=null;
+	/*
+	//reset volume to full if it hasn't been explicitly turned off
+	if(!$voice_button.hasClass("off"))
+	{
+	  $currentAudio[0].volume=maxVoiceVolume;
+	}
+	*/
+	//
+
+  //create the current script
+  textScript={
+    //"script":JSON.parse(script.script),
+    "script":script.script,
+    "id":script.id
+  };
+  //console.log(textScript);
+  
+	//pre-load all necessary resources. Calls the passed callback when done.
+	preloadResources(textScript, afterPreloadCallback);
+}
+
+//process event in line
+function doNextEvent(textScript)
+{
+  //happens when you click on the scene while the loading animation is running at the end of the scene
+  //probably fixed
+  if(current===textScript.script.length)
+  {
+    //we have already reached the end of the events, do nothing
+    return;
+  }
+  
+  //get current event
+  var currentEvent=textScript.script[current];
+  /*
+	console.log("Current event: "+current);
+	console.dir(currentEvent);
+	*/
+	
+  //if true, keep processing events
+	var running=false;
+
+	var text=currentEvent.text;
+	var id=currentEvent.id;
+	var src=currentEvent.src;
+	var type=currentEvent.type;
+	var name=currentEvent.name;
+	var effect=currentEvent.effect;
+	var color=currentEvent.color;
+	var msec=currentEvent.msec;
+	var count=currentEvent.count;
+			
+	var html="";
+	
+	//if "voice cut off" enabled in settings, pause possible voice playback
+	if(voiceCutoff && currentAudio)
+	{
+	  //$currentAudio[0].pause(); //CHANGE
+	  currentAudio.pause();
+	  //rewind the sound clip to the beginning again
+	  //firefox has a bug where on short clips (less then 1.5 seconds) if you pause it near the end of playback, the sound controls will pause, but the audio will keep playing through the speakers
+	  //meaning the audio will overlap subsequent playback. Set currentTime=0 to make sure to stop audio playback
+	  currentAudio.currentTime=0;
+	}
+	//if "copy to clipboard" is enabled, copy the next TXT event text
+	if(clipboardEnabled)
+	{
+		copyNextTXTEvent(textScript, current);
+	}
+	//
+	//process event based on type
+	switch(type)
+	{
+	  //start of scene. do nothing special
+		case "START":
+		  running=true;
+			break;
+	  //BG and EV are handled exactly the same
+		case "BG":
+		  //instead of deleting the active background image(es),
+		  //construct a synthetic black background and append it which would have the same end result as deleting the active background
+		  //I do this because there could be an old background that hasn't had the time to delete itself yet,
+		  //so deleting the current background would reveal the old background behind
+		  if(id==="del")
+		  {
+		    effect="ef00";
+		    src="/img/pc/hello_script/bg/M/black.fbb43a84b391e1da960f5f3b97f4f619.jpg";
+		  }
+      //rewrite the image path
+		  src=constructImagePath(textScript.id, src);
+					
+      var $image=$('<img class="mainImage" width="950" height="712" src="" />');
+      $image.prop("src", src);
+      //execute the animation effect
+      handleEffect($image, effect);
+			break;
+		case "OV":
+			if(id==="del")
+		  {	  
+		    //assert that the overlay exists
+        if($overlay.length===0)
+        {
+          console.log("Error: Trying to delete the overlay which doesn't exist. Line: "+current); //happens in scene c281, c393, c413, c527
+          running=true;
+          
+          break;
+        }
+		    if(effect==="ef01")
+		    {
+		      //$mainImage.removeClass("activeMainImage"); //changed
+		      if($(".activeMainImage").length){console.log("Error: There is already an active image present. Line: "+current);}
+		      
+		      $overlay.addClass("activeMainImage");
+		    
+					$overlay.animate({
+						opacity: 0
+						}, 1000, 'linear', function() {
+							$overlay.remove();
+							$overlay=$();
+
+							doNextEvent(textScript);
+				  });
+		    }
+		    else
+		    {
+					$overlay.remove();
+					$overlay=$();
+					//process the next event after a time
+					waitingTimer.complete=function(){
+						waitingTimer.timer=null;
+						doNextEvent(textScript);
+					};
+					waitingTimer.timer=setTimeout(waitingTimer.complete, 65);
+					//
+		    }
+		    break;
+		  }
+		  src=constructImagePath(textScript.id, src);
+		  
+			var $image=$('<img class="mainImage" width="950" src="" />');
+			$image.prop("src", src);
+			
+			//execute the animation effect
+			handleEffect($image, effect, type);
+		  break;
+		case "EV":
+	  	//rewrite the image path
+			src=constructImagePath(textScript.id, src);
+			
+			//if the src URL is actually based on query parameters and not a real image, execute the appropriate effect
+			//handle the effect as an effect image like the type "OUT", IE it does not remove itself after the effect is done, unsure if this is correct or not, time will tell
+		  if(typeof(src)==="object")
+		  {
+				if($(".activeMainImage").length){console.log("Error: There is already an active image present. Line: "+current);}
+				
+				//add activeMainImage class
+				$effectArea=$('<div class="activeMainImage effect OUT"></div>');
+				$effectArea.css({
+				  "opacity": 0,
+				  "background-color":id
+				});
+				
+				$screenArea.append($effectArea);
+				
+				$effectArea.animate({
+					opacity: 1
+					}, 1000, 'linear', function() {
+						$effectArea.removeClass("activeMainImage");
+						
+						doNextEvent(textScript);
+				});
+		  }
+		  else
+		  {
+				var $image=$('<img class="mainImage" width="950" height="712" src="" />');
+				$image.prop("src", src);
+				//execute the animation effect
+				handleEffect($image, effect);
+		  }
+
+			break;		  
+		case "TXT":  
+		  //show the text window because it could have been hidden by a previous effect
+		  $textWindow.removeClass("hide");
+		  $textWindow.removeClass("userHidden");
+		  
+		  //speechSynthesis.cancel();
+		  
+		  //if "del" or text=" ", hide text window instantly.
+		  //when the text property is "del" then it gets replaced with "" before its used in the text window in the original game.
+		  //therefore the script will differ based on if it's ripped at the beginning or at the end of a scene.
+		  if(name==="del" || (name==="" && text===" "))
+		  {
+		  	//scene c226 : event: 123 & scene c227 : event: 19 have the string "01" and "ef01" in the text property of a "del" event. I assume this is a bug.
+		  	//since the text window can't be made visible by a user in the original game when it has been hidden by an event,
+		  	//and the window only becomes visible when written to again by another event, it doesn't matter what text is in the window in its hidden state.
+		  	//so explicity set the text to the empty string "" if hiding the text window, so if the window is brought forth by a user when hidden by an event, it will be displayed as empty.
+		  	text=" ";
+		    $textWindow.addClass("hide");
+		    running=true;
+		  }
+			else if(name)
+			{
+				html=name+"<br />";
+			}
+			//scene c214 event "v_SR053_0022" incorrectly has a src property, when it is the guy speaking, however, since the src property is a empty string, it doesn't update the audio element
+			if(src)
+			{
+				//rewrite the sound path
+				src=constructSoundPath(textScript.id, src);
+				//pause potentially playing voice
+				if(currentAudio)
+				{
+				  currentAudio.pause();
+				  currentAudio.currentTime=0;
+				}
+				//get the preloaded resource with that audio path
+				currentAudio=preload.temp[src];
+	  		//set the current volume before any playback
+	  		currentAudio.volume=maxVoiceVolume;
+				currentAudio.play();
+				//$currentAudio.attr("src", src);  //CHANGE
+			}
+			/*
+			else
+			{
+			  utterance.voice=getVoice('Google 日本人');			  
+			  utterance.text=text.replace(/##/g, " ");
+		    speechSynthesis.speak(utterance);
+			}
+			*/
+			
+			//execute the animation effect, if any
+			if(effect)
+			{
+			  //assert that only the shake effect is used with txt events
+			  if(effect!=="ef02")
+			  {
+			    console.log("Error: Only effect ef02 is allowed on txt events, found effect: "+effect+". Line: "+current);
+			  }
+			  //in scene c20 an "ef01" effect is on txt event 147, assume this is a bug, so don't handle that effect if it is found //also found on scene c218, event 170
+			  //c296, event 16 has a text line as an effect type by mistake. Also scene c318, line 119
+			  if(effect!=="ef01")
+			  {
+			    //the shake effect is done on the wrapper element for the scene images, so that all images shake together
+			    handleEffect($screenArea, effect);
+			  }
+			}
+			
+			//## indicates line breaks in the script, replace them with breaks
+			html+=text.replace(/##/g, "<br />");
+			$textHolder.html(html);
+			//if it is not a text delete event
+			if(!running)
+		  {
+				//create an item to put the text in for the history log
+				var historyItem=$("<div>");
+				historyItem.addClass("historyItem");
+				
+				if(src)
+				{
+				  historyItem.addClass("voiced");
+				  historyItem.attr("data-src", src);
+				}
+				historyItem.html(html);
+				
+				$history.append(historyItem);
+				//if the log is currently showed, update it's scroll position
+				if($history.hasClass("show"))
+				{
+				  //scroll the log to the end of the content
+				  $history.scrollTop($history[0].scrollHeight-$history.height());
+				  //check so the scrollbar isn't disabled
+				  if($history.hasClass("ps-container"))
+				  {
+						//run the update function of the customized scrollbar when the content changes or the scroll position changes
+						$history.perfectScrollbar('update');
+					}
+				}
+		  }
+			
+			break;
+		//this probably indicated an error during the creation of the script. The error's presence in many cases seems to be harmless and doesn't effect the scene. 
+		//In other cases, it seems that a necessary event has been lost, creating bugs in the scene.
+		//What every instance of an "ERROR UNKNOWN COMMAND" event meant originally is impossible to say for certain.
+		case "ERROR UNKNOWN COMMAND":
+			console.log("Error: Unknown command! Line: "+current);
+			running=true;
+			
+			break;
+		case "OUT":
+		  //always msec=0? Instead set it to a higher value like 65 because 0 way faster than the original effect
+		  //remove the added effect area
+		  if(color==="del")
+		  {	    
+		    $effectArea.remove();
+		    
+		    //process the next event after a time
+		    waitingTimer.complete=function(){
+		      waitingTimer.timer=null;
+		      doNextEvent(textScript);
+				};
+		    waitingTimer.timer=setTimeout(waitingTimer.complete, 65);
+		    //
+		  }
+		  //Linear easing from transparent to a specific color
+		  else
+		  {		  
+				$effectArea=$('<div class="effect OUT" style="background-color:'+color+';"></div>');
+				$screenArea.append($effectArea);
+				
+				//the animate function fails if duration is 0, and an animation with duration 1ms is to fast to see
+				//so set a minimum at 80ms (corresponds to the duration of 0 at the original effect)
+				if(msec===0)
+				{
+			 		waitingTimer.complete=function(){
+			 		  waitingTimer.timer=null;
+				  	$effectArea.css("opacity", 1);
+				  	
+						doNextEvent(textScript);
+					};
+					waitingTimer.timer=setTimeout(waitingTimer.complete, 80);
+				}
+				else
+				{
+				  if($(".activeMainImage").length){console.log("Error: There is already an active image present. Line: "+current);}
+				  $effectArea.addClass("activeMainImage"); 
+				  
+					$effectArea.animate({
+						opacity: 1
+						}, msec, 'linear', function() {
+						  $effectArea.removeClass("activeMainImage"); 
+						  
+							doNextEvent(textScript);
+					});
+				}
+			}
+			
+		  break;
+		//just wait for a while
+		case "WAIT":
+			waitingTimer.complete=function(){
+			  waitingTimer.timer=null;
+				doNextEvent(textScript);
+			};
+			waitingTimer.timer=setTimeout(waitingTimer.complete, msec);
+			
+		  break;
+		//jump back to active card?, irrelevant in this application, ignore
+		case "JUMP":
+		  running=true;
+		  
+		  break;
+    case "SELECT":
+			var $choiceWrapper=$('<div id="choiceWrapper">');
+			
+			//save the selected choice for the end of the scene
+			$choiceWrapper.on("click", ".pathChoice", function(event){
+			  event.stopPropagation();
+			  //convert to number
+		    nextPath=+$(this).attr("id").slice(10);
+			  $choiceWrapper.remove();
+			  //loading=false;
+			  toggleSkipping("stop");
+			  
+			  //if "copy to clipboard" is enabled, copy the next TXT event text
+				if(clipboardEnabled)
+				{
+			    copyNextTXTEvent(scripts[Number(index)][nextPath], 0);
+			  }
+			  
+			  //if a choice has been made then the nextPath has been set to the index of the next scene part
+			  constructScene(scripts[Number(index)][nextPath], function(){
+					//when preloading is done, start event handling
+					loading=false;
+					
+					advanceEvent();
+				});
+			});
+			
+			//if count is true and bigger than 0, then it is a choice
+			for(var i=1;i<=count;i++)
+			{
+				var $pathChoice=$('<div id="pathChoice'+i+'" class="pathChoice"></div>');
+				$pathChoice.html(currentEvent['select'+i]);
+				$pathChoice.html($pathChoice.html()+"<br />");
+				$choiceWrapper.append($pathChoice);
+			}
+			$sceneArea.append($choiceWrapper);
+			
+			//hide the text window on choice?
+	    $textWindow.addClass("hide");
+	    //stop skipping if on
+	    toggleSkipping("stop");
+	    //set loading to true to disable ON click event handlers until the next scene has started it's event handling
+	    loading=true;
+    	//Object count: 2 next_url1: "/album/album_check_ajax?card_id=C00167&album_id=&mode=b_c" next_url2: "/album/album_check_ajax?card_id=C00167&album_id=&mode=b_d" select1: "【対魔忍衣装のままで】" select2: "【裸にして】" type: "SELECT"
+      break;
+		//end of the scene. last event
+		case "END":
+			endScene();
+
+			return;
+			
+		  break;
+		default:
+		  console.log("Error: Unrecognized event type! Line: "+current);
+		  
+		  break;
+	}
+	
+	current++;
+	
+	//if running, process another event
+	if(running)
+	{
+	  //can't call advanceEvent() because we could be inside an animation callback,
+	  //and advanceEvent calls the finish function on the element, which would result in it not calling another doNextEvent()
+	  doNextEvent(textScript);
+	}
+}
+
+//this function must call doNextEvent(textScript[current]); with a callback, never directly, else it will create an infinite loop
+//REWRITE THIS FUNCTION and the do next event function
+function handleEffect($image, effect, type)
+{	
+	//do animation based on effect type
+  switch(effect)
+  {
+    case "ef0":
+      console.log("Effect: ef0 spotted. double check. Line: "+current); //happens in scene: c99, c278. The original game treats this as effect "ef00"
+    //change instantly (roughly 90ms wait after effect)
+    case "ef00":
+      if(type==="OV")
+      {
+        if($overlay.length===0)
+        {
+          console.log("Error: Overlay does not already exist! Line: "+current);
+        }
+        $overlay.attr("src", $image.attr("src"));
+      }
+      else
+      {
+        $screenArea.append($image);
+        //removing the old image after 0.5 seconds because firefox takes a while to fully load the new image,
+        //so that the default "black" background doesn't shine through
+				var $mainImageForRemoving=$mainImage;
+				setTimeout(function(){
+					$mainImageForRemoving.remove();
+				}, 500);
+				
+				$mainImage=$image;
+      }
+
+      //0 or 1 ms is faster than the original so set it to 90ms
+			waitingTimer.complete=function(){
+			  waitingTimer.timer=null;
+				doNextEvent(textScript);
+			};
+			waitingTimer.timer=setTimeout(waitingTimer.complete, 90);
+      
+      break;
+    //fade in effect
+    case "ef01":
+      if($(".activeMainImage").length){console.log("Error: There is already an active image present. Line: "+current);}
+      //so we can refer to it when we want to stop ongoing animations
+	    $image.addClass("activeMainImage");
+	    
+      //set the new image to be initially invisible
+		  $image.css("opacity", 0);
+			$screenArea.append($image);
+			
+			//if an overlay already exists, fade it out while you fade the new one in
+			var stepFunction=function(){};
+			if($overlay.length!==0)
+			{
+			  //console.log("animating overlay over another");
+				stepFunction=function(now, fx){
+				  $overlay.css("opacity", 1-now);
+				};
+			}
+			//     
+			$image.animate({
+				opacity: 1,
+				},{
+				step:stepFunction,
+				duration:1000,
+				easing:'linear',
+				complete:function() {
+				  if(type==="OV")
+				  {
+				    $overlay.remove();
+						$overlay=$image;
+				  }
+				  else
+				  {
+						//removing the old image after 0.5 seconds because firefox takes a while to fully load the new image,
+						//so that the default "black" background doesn't shine through
+						var $mainImageForRemoving=$mainImage;
+						setTimeout(function(){
+							$mainImageForRemoving.remove();
+						}, 500);
+						
+						$mainImage=$image;
+				  }
+				  $image.removeClass("activeMainImage");
+				  /*
+					waitingTimer.complete=function(){
+						waitingTimer.timer=null;
+						doNextEvent(textScript);
+					};
+					waitingTimer.timer=setTimeout(waitingTimer.complete, 90);
+					*/
+					//effect is on new picture, so advance
+					doNextEvent(textScript);
+			}});
+    
+      break;
+    //most likely a typo in the original script for effect ef02?
+    case "ef":
+      console.log("Effect: ef spotted. double check. Line: "+current); //happens in scene: c30
+    case "02":
+      console.log("Effect: 02 spotted. double check. Line: "+current);
+    case "ef002":
+      console.log("Effect: ef002 spotted. double check. Line: "+current);
+    case "ef2":
+      console.log("Effect: ef2 spotted. double check. Line: "+current);
+    case "fe02":
+      console.log("Effect: fe02 spotted. double check. Line: "+current); //happens in scene: c438, line: 111
+    //shaking effect
+    case "ef02":
+      //shake effect function, called recursively
+      //timesToShake: number of times to shake the active image
+			function shake(timesToShake)
+			{		
+			  //alternate shaking left to right
+				if(timesToShake%2===0)
+				{
+					$image.css("left", "-5px");
+				}
+				else
+				{
+					$image.css("left", "5px");
+				}
+								
+				//call itself again after a while based on timesToShake
+				waitingTimer.timer=setTimeout(function(){
+				  timesToShake--;
+				  //stop shaking and set original position, then do nothing. this is what happens normally when the event is processed
+				  //if the user ends the shake function early by calling complete() we also advance to the next event //assigned in the complete() function
+				  if(timesToShake==0)
+				  {
+				    //waitingTimer.complete();
+						$image.css("left", "0");
+						//effect is always? on current picture so don't process the next event
+						waitingTimer.timer=null;
+						waitingTimer.complete=null;
+						
+				    return;
+				  }
+					shake(timesToShake);
+				}, 60);
+			}
+			
+			//stop shaking and set original position, then advance to the next event.
+			//This is what happens when the user clicks on the scene to advance to the next event, but the shaking effect isn't done yet. Then, instead of just stop shaking, we also advance to the next event
+			waitingTimer.complete=function(){
+					$image.css("left", "0");
+					//effect is always? on current picture so don't process the next event
+					waitingTimer.timer=null;
+					waitingTimer.complete=null;
+					
+					//advance to the next event. This only happens when a user initiates the complete() function, not when the shake event ends normally
+					doNextEvent(textScript);
+			};
+			
+			//start shaking
+			shake(8);
+			
+      break;
+    //can't find any existance of this effect in the original code, happens in scene c147
+    case "ef05":
+      console.log("Effect: 05 spotted. double check. Line: "+current);
+      break;
+    //c347: line 287 and c467: line 279 has broken text, which inserts unknown html element types into the text wrapper and the text also overflows into an erroneous effect type
+    default:
+      console.log("Unrecognized effect: "+effect+". Line: "+current);
+      break;
+  }
+}
+
+//toggle text/event skipping
+//state: force on or off (start, stop)
+function toggleSkipping(state)
+{
+  //if state is supplied, use it, else determine how to toggle based on the state of the skip button
+  state=state?state:$skip_button.hasClass("stop");
+
+  //if already skipping, turn of the skipping
+	if(state==="stop" || state===true)
+	{
+    $skip_button.removeClass("stop");
+    clearInterval(skipId);
+    skipId=null;   
+	}
+	//else start a skip callback, unless there already exist one running (skipId!==null)
+	else if((state==="start" || state===false) && skipId===null)
+	{
+		skipId=setInterval(function(){
+		  //if the text window has been hidden by the user and not the program, don't advance the event but continue running the skip interval.
+		  //because if you are skipping, and then hide the text window the skipping should stop,
+		  //however, when it becomes visible again it should continue skipping
+		  if(!$textWindow.hasClass("userHidden"))
+		  {
+		    advanceEvent();
+		  }
+		}, skipSpeed);
+		
+		$skip_button.addClass("stop");
+	}
+}
+
+//do the loading animation with the sliding door, sliding it first up then down
+//loadCallback: execute the passed callback between the loading animations when the "page area" is hidden
+//endLoading: if false, skip the step to slide the door down again, keeping it covering the screen. Later, a function should then call endLoading() to slide the door down again
+function startLoading(loadCallback, endLoading)
+{
+  if(endLoading===undefined)
+  {
+    endLoading=true;
+  }
+  //when loading=true, click events will refuse to do anything with the page
+  loading=true;
+
+  $loading.transition({
+    //translateY: "-720px"
+    //top: "0"
+    //transform:"translateY(-720px)"
+    translate:"0, -720px"
+  }, {
+    duration:500,
+    easing: easing,
+    complete:function(){
+			//if in a scene, stop further event processing
+			if($sceneArea.hasClass("active"))
+			{
+				stopEvent();
+			}
+			//do stuff
+      loadCallback();
+      
+      if(endLoading)
+      {
+				$loading.transition({
+					//translateY: 0
+					//top: "+=720"
+					//transform:"translateY(0)"
+					translate:"0, 0"
+				}, {
+					duration:500,
+					easing: easing,
+					complete:function(){	
+						loading=false;
+					}
+				});
+      }     
+    }
+  });
+}
+
+//slides the door down and when done runs the passed callback
+function endLoading(endCallback)
+{
+	$loading.transition({
+		//translateY: 0
+		//top: "+=720"
+		//transform:"translateY(0)"
+		translate:"0, 0"
+	}, {
+		duration:500,
+		easing: easing,
+		complete:function(){	
+			loading=false;
+			
+			endCallback();
+		}
+	});
+}
+
+//immediately advance to the next event, clearing timeouts and finishing animations
+//should not be called from complete() animation callbacks. call doNextEvent directly then instead
+function advanceEvent()
+{
+	//if the waiting timer is on, clear it and run it's complete function
+	if(waitingTimer.timer!==null)
+	{
+		clearTimeout(waitingTimer.timer);
+		waitingTimer.timer=null;
+		waitingTimer.complete();
+		
+		return;
+	}
+	//get the active image element which animations could be running on and finish them if there are any currently running
+	var $tempActiveMainImage=$(".activeMainImage");
+	if($tempActiveMainImage.length>1)
+	{
+	  console.log("Error: More than 1 active image found. Line: "+current);
+	}
+	
+	if($tempActiveMainImage.length!==0 && $tempActiveMainImage.queue().length!==0)
+	{
+		//on complete callbacks are still called, therefore advancing to the next event too
+		$tempActiveMainImage.finish();
+	}
+	//if no timers has been set or no animation are running, simply process the next event
+	else
+	{
+		doNextEvent(textScript);
+	}
+}
+
+//immediately stop the current event and don't call new event processing
+function stopEvent()
+{
+  //$currentAudio[0].pause(); //CHANGE
+  if(currentAudio)
+  {
+    currentAudio.pause();
+    currentAudio.currentTime=0;
+  }
+  currentAudio=null;
+
+	//clear possible set timers, therefor not advancing to the next event
+	if(waitingTimer.timer!==null)
+	{
+		clearTimeout(waitingTimer.timer);
+		waitingTimer.timer=null;
+	}
+	
+	//get the active image element which animations could be running on and stop them if there are any currently running
+	var $tempActiveMainImage=$(".activeMainImage");
+	if($tempActiveMainImage.length>1)
+	{
+	  console.log("Error: More than 1 active image found. Line: "+current);
+	}
+	
+	if($tempActiveMainImage.length!==0 && $tempActiveMainImage.queue().length!==0)
+	{
+		//immediately stops the animation and complete callbacks are never called, therefore it will not advance to the next event
+		$tempActiveMainImage.stop(true);
+	}
+}
+
+//end h-scene
+function endScene(event)
+{
+  if(loading)
+  {
+    return;
+  }
+
+	startLoading(function(){
+		//switch display area between single scene and h-scene list
+		$sceneArea.removeClass("active");
+		$h_scenes.addClass("active");
+		
+		//show the navigation buttons 
+		$next.add($prev).add($pageNr).removeClass("hide");
+				
+		//if skipping, turn it off
+		toggleSkipping("stop");
+	});
+}
+
+//helper function
+function parseQueryString(queryString)
+{
+	var params = {}, queries, temp, i, l;
+	// Split into key/value pairs
+	queries = queryString.split("&");
+	// Convert the array of strings into an object
+	for ( i = 0, l = queries.length; i < l; i++ ) {
+			temp = queries[i].split('=');
+			params[temp[0]] = temp[1];
+	}
+
+	return params;
+}
+
+//create the path to the image based on it's own URL and the ID(folder name) of the scene
+function constructImagePath(id, src)
+{
+	var path="scenes/"+id+"/images/";
+  var lastIndex=src.lastIndexOf("/");
+  
+  src=src.slice(lastIndex+1);
+
+  //OLD!!: if the src URL is not an image URL directly, but a non_resource URL with query parameters, check it's scr_id and fetch the appropriate image
+  //NEW!!: if the src URL is not an image URL directly, but a non_resource URL with query parameters, parse the query parameters and return them to the event handler
+  //includes query parameters: //{type: "EV", src_id: "black", mode: "pc"} 
+  if(src.slice(0, 12)==="non_resource") 
+  {
+    return parseQueryString(src.slice(13));
+  }
+  
+  return path+src;
+}
+
+//create the path to the sound based on it's own URL and the ID(folder name) of the scene
+function constructSoundPath(id, src)
+{
+	var path="scenes/"+id+"/sounds/";
+  var lastIndex=src.lastIndexOf("/");
+  src=src.slice(lastIndex+1);
+  
+  return path+src;
+}
+
+//find all the images in the text script and save them. Used for quick access to all images in h-scene lists and CG lists
+function findImagesInScript(sceneImages, textScript)
+{
+	for(var i=0;i<textScript.script.length;i++)
+	{
+		var src=textScript.script[i].src;
+		var type=textScript.script[i].type;
+		var id=textScript.script[i].id;
+		//console.log(id);
+		
+		//if the id matches any of the conditions, it is an image we do not want to save (backgrounds, characters, black etc) we don't want it showing up in the CG viewer
+		//because I'm to lazy to include a thumbnail functionality
+		if(id===undefined || id==="black" || id==="white" || id==="del" || (id.slice(0, 3)==="red") || (id.indexOf("_")!==-1) || (id.indexOf("nc")!==-1) || id==="SR156h" || id==="SR155k")
+		{
+		  continue;
+		}
+			
+		switch(textScript.script[i].type)
+		{
+			case "BG":
+				src=constructImagePath(textScript.id, src);
+				if(typeof(src)!=="object")
+				{
+					var lastIndex=src.lastIndexOf('/');
+					var srcFilename=src.slice(lastIndex+1);
+					//if the image has already been put in the array, do nothing. happens in scenes where images goes back and forth.
+					var newImg=true;
+					for(var j=0;j<sceneImages.length;j++)
+					{
+						if(sceneImages[j].indexOf(srcFilename)!==-1)
+						{
+							newImg=false;
+						}
+					}
+					if(newImg)
+					{
+						sceneImages.push(src);
+					}
+				}
+				break;
+			case "EV":
+				src=constructImagePath(textScript.id, src);
+				if(typeof(src)!=="object")
+				{
+					var lastIndex=src.lastIndexOf('/');
+					var srcFilename=src.slice(lastIndex+1);
+					
+					var newImg=true;
+					for(var j=0;j<sceneImages.length;j++)
+					{
+						if(sceneImages[j].indexOf(srcFilename)!==-1)
+						{
+							newImg=false;
+						}
+					}
+					if(newImg)
+					{
+						sceneImages.push(src);
+					}
+				}
+				break;                         
+			default:
+			  break;
+		}
+	}
+}
+
+//get the images available from the text scripts for quick use by the cg list and h-scene list and save them in an array. //and in a *.js file if necessary for performance
+function createSceneImages()
+{
+  var sceneImages=[];
+
+  //parse all textScripts
+	for(var currentScene=0;currentScene<scripts.length;currentScene++)
+	{	
+		//if the script is made up of parts, loop through them and add their images to the images array. Array type check done Old school style
+    if(Object.prototype.toString.call(scripts[currentScene])==="[object Array]")
+	  {
+			sceneImages[currentScene]={
+				"id":scripts[currentScene][0].id,
+				"images":[]
+			};
+			
+	    for(var i=0;i<scripts[currentScene].length;i++)
+	    {	    
+				//create object to pass to findImagesInScript()
+				var textScript={
+					//"script":JSON.parse(scripts[currentScene][i].script),
+					"script":scripts[currentScene][i].script,
+					"id":scripts[currentScene][i].id
+				}
+				
+				findImagesInScript(sceneImages[currentScene].images, textScript);
+	    }
+	  }
+	  else
+	  {
+			sceneImages[currentScene]={
+				"id":scripts[currentScene].id,
+				"images":[]
+			};
+	  
+			//create object to pass to findImagesInScript()
+			var textScript={
+				//"script":JSON.parse(scripts[currentScene].script),
+				"script":scripts[currentScene].script,
+				"id":scripts[currentScene].id
+			}		
+			//loop through text scripts one script at a time and find all the images
+			//sceneImages[currentScene].images=findImagesInScript(textScript);
+			findImagesInScript(sceneImages[currentScene].images, textScript);
+	  }
+	}
+	//save rawSceneImages to a js file if nessesary
+	//var rawSceneImages=JSON.stringify(sceneImages);
+	
+	//console.log(sceneImages);
+  return sceneImages;
+}
+
+//Compute the scene images
+function getSceneImages()
+{
+	//create the scene images. Intensive function 
+	var sceneImages=createSceneImages();
+
+  return sceneImages;
+}
+   
+//switch and build scene based on menu item clicked
+function switchAndBuildScene(event)
+{
+  //config menu item has it's own click event (lightbox)
+	if(loading || $(this).attr("id")==="config")
+	{
+	  return;
+	}
+	
+	var page=$(this).attr("data-page");
+	
+	startLoading(function(){	
+		$(".pageWrapper.active").removeClass("active");
+		$("#"+page).addClass("active");
+				
+		//show the navigation buttons and active page number
+		$prev.add($next).add($pageNr).removeClass("hide");
+				
+		//if skipping, turn it off
+		toggleSkipping("stop");
+				
+		//build the scene/cg list based on data-page on menu item and put it in the same element with that id 
+		buildScene(0, page);
+	});
+}
+
+//build the scene list based on current offset saved on "next" and "previous" buttons
+//scenes: ID of element to append scenes to. also used to determine if you should append "nr of CG" to the elements
+function buildScene(offset, scenes)
+{
+	//display max 16 scenes per page
+	var nrOfScenes=Math.min(sceneImages.length, 16); 
+
+	//element to append scenes to
+	var $scenes=$("#"+scenes);
+	//remove old scenes 
+	$scenes.html("");
+	
+	//build the html structure outside the dom 
+	var $wrapper=$("<div>");
+
+	for(var i=0;i<nrOfScenes;i++)
+	{     
+		//if at end, break
+		if((offset+i)>=sceneImages.length)
+		{
+			break;
+		}
+		var index=offset+i;
+		
+		var html='<div class="scene" id="'+sceneImages[index].id+'" title="'+sceneImages[index].id+'" data-index="'+index+'"><img class="sceneImage" src="'+sceneImages[index].images[1]+'" /><div class="sceneWrapper"><div class="effectWrapper"></div><div class="effectWrapper3"></div></div></div>';
+		var $scene=$(html);
+		
+		//if CG list, add the total number of CG available in the scene to the element 
+		if(scenes==="cg_list")
+		{
+			var totalNrOfCG=sceneImages[index].images.length;
+			
+			var $totalCg=$('<div class="totalNrOfCG stylish"></div>');  
+			$totalCg.html(totalNrOfCG+'/'+totalNrOfCG);
+			$scene.append($totalCg);
+			//
+		}
+		$wrapper.append($scene);
+	}
+	
+	if((offset+nrOfScenes)>=sceneImages.length)
+	{
+		var nextOffset=0;
+	}
+	else
+	{
+		var nextOffset=offset+nrOfScenes;
+	}
+				
+	if((offset-nrOfScenes)<0)
+	{
+		var nrOfScenesOnLastPage=sceneImages.length%nrOfScenes;
+		if(nrOfScenesOnLastPage===0)
+		{
+			var prevOffset=sceneImages.length-nrOfScenes;
+		}
+		else
+		{
+			var prevOffset=sceneImages.length-nrOfScenesOnLastPage;
+		}
+	}
+	else
+	{
+		var prevOffset=offset-nrOfScenes;
+	}
+		 
+	//set the offset to the navigational buttons, which they use to determine where to start fetching items from
+	$next.attr("data-sceneOffset", nextOffset);
+	$prev.attr("data-sceneOffset", prevOffset);
+	
+	var pageNr=(index+1)/(nrOfScenes);
+	//round up
+	pageNr=Math.ceil(pageNr);
+	//round up
+	var lastPageNr=Math.ceil(sceneImages.length/nrOfScenes);	
+	$pageNr.html(pageNr+'/'+lastPageNr);
+
+	$scenes.append($wrapper); 
+}
+
+//get next CG in line or get CG at index
+//action: start: start at the specified scene.
+//action: prev, next: if you should get the next or the previous image in the list
+//sceneIndex: the scene to start displaying CG from
+function getCG(action, sceneIndex)
+{
+  if(action==="start")
+  {
+		var currentScene=sceneIndex;
+		var currentImage=0;
+  }
+  //else get the currently displayed CG index
+  else
+  {
+		var currentScene=$currentCGImage.attr("data-currentScene");
+		var currentImage=$currentCGImage.attr("data-currentImage");
+  }
+  //get the index of the next CG in the list
+  if(action==="next")
+  {
+		currentImage++;
+
+		if(sceneImages[currentScene].images.length===currentImage)
+		{
+			currentImage=0;
+			currentScene++;
+			//we have reached the end, start from the beginning again 
+	    if(sceneImages.length===currentScene)
+	    {
+	    	currentScene=0;
+	    }
+		}
+	}
+	//get the index of the previous CG in the list
+  else if(action==="prev")
+  {
+		currentImage--;
+
+		if(currentImage<0)
+		{
+			currentScene--;
+			//we have reached the beginning, start from the end 
+	    if(currentScene<0)
+	    {
+	    	currentScene=sceneImages.length-1;
+	    }
+			currentImage=sceneImages[currentScene].images.length-1;
+		}
+	}
+	
+	//update the CG image 
+	var $img=$('<img class="mainImage" src="" width="950" height="712" />');
+	$img.attr("src", sceneImages[currentScene].images[currentImage]);
+	
+  //update the CG index on the image
+	$img.attr("data-currentScene", currentScene);
+	$img.attr("data-currentImage", currentImage);
+	
+	$cgWrapper.append($img);
+	//removing the old image after 0.5 seconds because firefox takes a while to fully load the new image,
+	//so that the default "black" background doesn't shine through
+	var $mainImageForRemoving=$currentCGImage;
+	setTimeout(function(){
+		$mainImageForRemoving.remove();
+	}, 500);
+	//
+	
+	$currentCGImage=$img;
+}
+
+function showTextLog()
+{
+	//stop if skipping
+	toggleSkipping("stop");
+
+	//hide text window
+	$textWindow.addClass("hide");
+	$textWindow.addClass("userHidden");
+	//show the log
+	$history.addClass("show");
+	//scroll the log to the end of the content
+	$history.scrollTop($history[0].scrollHeight-$history.height());
+	//check so the scrollbar isn't disabled
+	if($history.hasClass("ps-container"))
+	{
+		//run the update function of the customized scrollbar when the content changes or the scroll position changes
+		$history.perfectScrollbar('update');
+	}
+}
+
+function hideTextLog()
+{
+	$history.removeClass("show");
+	
+	if(currentAudio)
+	{
+	  currentAudio.pause();
+	  currentAudio.currentTime=0;
+	}
+	
+	//when hiding the log, stop potential voice playback and reset the audio element to the current event's voice file, if any
+	var src=textScript.script[current-1].src;
+	var type=textScript.script[current-1].type;
+	if(src && type==="TXT")
+	{
+		src=constructSoundPath(textScript.id, src);
+		//$currentAudio.attr("src", src); //CHANGE
+		currentAudio=preload.temp[src];
+	}
+	//$currentAudio[0].pause(); //CHANGE
+	//
+	
+	//show text window
+	$textWindow.removeClass("hide");
+	$textWindow.removeClass("userHidden");
+}
+
+//test all fonts in the select box to see if they appear to work and give them an icon depending on the result.
+//should be run after the DOM is ready but before constructing the custom select box with the selectBoxIt plugin
+function testAvailableFonts($el)
+{
+	//this should be a @font-face embedded font that matches ALL glyphs in the test string
+	//this is to prevent it from matching a user agent or system fallback font if it happens to be the same as a font that exist in the select box
+  var fallbackFont="NonsenseFont6FzO0ds351s";
+  
+  $el.css("font-family", fallbackFont);
+
+	//put the individual characters in their own spans in the test element
+	var text=$el.text();
+	var testStr="";
+	for(var i=0;i<text.length;i++)
+	{
+		testStr+="<span>"+text.charAt(i)+"</span>";
+	}
+	
+	$el.html(testStr);
+	//
+	
+	//Compute and save each character width
+	var testObj=[];
+	var j=0;
+	$el.children().each(function(){
+	 
+		testObj[j]=this.getBoundingClientRect().width;
+		j++;
+	
+	});
+	//
+	
+	//loop through and test all fonts in the select box if they seem to work
+	$("#fontChange option").each(function(index, el){
+	
+		//don't test the default font-family (first option)
+		if(index===0)
+		{
+			return;
+		}
+	
+		var value=$(this).val();
+				
+		//fall back to the embedded font if the font doesn't exist
+		$el.css("font-family", value+","+fallbackFont);
+		
+		var works=false;
+		var j=0;
+		//loop through all individual characters (in spans) and test their new width to the original font width
+		$el.children().each(function(){
+			//if their width is not the same then it means the selected font works
+			if(testObj[j]!==this.getBoundingClientRect().width)
+			{
+				//console.log("Width is not equal! difference: "+(testObj[j]-this.getBoundingClientRect().width));
+				works=true;
+				//stop looping because we have established that the font works
+				return false;
+			}
+			j++;
+		
+		});
+		
+		if(works)
+		{
+			//console.log("The selected font appears to work");
+			$(this).attr("data-iconurl", "data/system/misc/ok.png");
+		}
+		else
+		{
+			//console.log("The selected font does not appear to work");
+			$(this).attr("data-iconurl", "data/system/misc/unknown.png");
+		}
+	
+	});
+}
+
+//scale the bodyWrapper and the colorbox (lightbox) to fit the viewport, used with fullscreen functionality (F11)
+function scaleScreenArea()
+{
+	//reset margin to center the wrapper
+	$("#bodyWrapper").css("margin", "");
+
+	var selector="#bodyWrapper, #colorbox";
+	
+	//reset origin to center it horizontaly and to the top verticaly 
+	$(selector).css({
+		"-moz-transform-origin":"",
+		"-webkit-transform-origin":"",
+		"-o-transform-origin":"",
+	  "transform-origin":""
+	});
+	
+	var pageHeight=825;
+	var pageWidth=950;
+  //find the ratio to use to scale the wrapper to fit the viewport
+	var scaleY=window.innerHeight/pageHeight;
+	var scaleX=window.innerWidth/pageWidth;
+	
+	var scale=0;
+	
+	if(scaleX<scaleY)
+	{
+		scale=scaleX;
+		
+		if(scaleX<1.0)
+		{
+			$("#bodyWrapper").css({
+				"-moz-transform-origin":"left top",
+				"-webkit-transform-origin":"left top",
+				"-o-transform-origin":"left top",
+			  "transform-origin":"left top 0"
+			});
+		}
+
+	}
+	else
+	{
+		 scale=scaleY;
+
+		 if(scaleX<1.0)
+		 {
+			 $("#bodyWrapper").css("margin-left", (window.innerWidth-pageWidth)/2+"px");
+		 }
+	}
+	/*
+	console.log("scale: Y: "+scaleY);
+	console.log("scale: X: "+scaleX);
+	*/
+	//scale the wrapper and the lightbox
+	$(selector).css({
+		"-moz-transform":"scale("+(scale)+")",
+		"-webkit-transform":"scale("+(scale)+")",
+		"-o-transform":"scale("+(scale)+")",
+	  "transform":"scale("+(scale)+")"
+	});
+	//set the body's height to the height of the viewport to prevent overflow from being visible and also to prevent scrolling
+	$("body").css("height", (720*scale)+"px");
+
+	//scale the top positon with the height of the wrapper 
+	//60px top, fixed offset of the colorbox
+	$("#colorbox").css({
+		"margin-top":((60*scale)-60)+"px"
+	});
+}
+//
+
+//toggle fullscreen state
+function toggleFullScreen()
+{
+  if (!document.fullscreenElement &&    // alternative standard method
+      !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {  // current working methods
+    if (document.documentElement.requestFullscreen) {
+      document.documentElement.requestFullscreen();
+    } else if (document.documentElement.msRequestFullscreen)  {
+      document.documentElement.msRequestFullscreen();
+    } else if (document.documentElement.mozRequestFullScreen) {
+      document.documentElement.mozRequestFullScreen();
+    } else if (document.documentElement.webkitRequestFullscreen) {
+      document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+      //$("#bodyWrapper")[0].webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+    }
+  } else {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.msExitFullscreen) {
+      document.msExitFullscreen();
+    } else if (document.mozCancelFullScreen) {
+      document.mozCancelFullScreen();
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen();
+    }
+  }
+}
+//
+
+//Takes a promise and catches a specific rejected promise and logs the error message. //To prevent chrome from throwing errors in v50.
+//Chrome v50 has a bug where if you do 
+//currentAudio.pause();
+//currentAudio.play();
+//right after each other, the play() method will fail with a rejected promise, but the play() method succeeds anyway.
+//Also happens when you do: currentAudio.currentTime=0; currentAudio.play(); currentAudio.pause();
+//As such we ignore the error. See: https://bugs.chromium.org/p/chromium/issues/detail?id=593273
+function catchAndIgnorePromiseError(promise)
+{
+	//if not a promise, do nothing
+	if(promise===undefined)
+	{
+		return;
+	}
+	
+	promise.then(function() {
+		//console.log('Promise fulfilled');
+	}).catch(function(error) {
+		//console.log('Promise rejected'); //console.log(error);
+		//Ignore bug
+		if(error.name==="AbortError" && error.code===20)
+		{
+		  console.log("Play() got interrupted, this is a known bug in chrome v50 and is expected");
+		}
+		//else rethrow the error
+		else
+		{
+		  throw error;
+		}
+	});
+}
+
+//copies the next TXT or SELECT event's text to the clipboard
+//if it reaches the end of the script without finding any event, it does nothing
+function copyNextTXTEvent(textScript, currentLoop)
+{
+  //loop until the next event is either a regular "TXT" event or a "SELECT" event
+  //ignore "TXT" events that just hide the text area i.e. name==="del"
+	while(
+	  currentLoop!==textScript.script.length && 
+	  textScript.script[currentLoop].type!=="SELECT" &&
+	  (textScript.script[currentLoop].type!=="TXT" || 
+	    (textScript.script[currentLoop].type==="TXT" && textScript.script[currentLoop].name==="del") || 
+	    (textScript.script[currentLoop].type==="TXT" && textScript.script[currentLoop].name==="" && textScript.script[currentLoop].text===" ")
+	  ))
+	{
+	  currentLoop++;
+	}
+	//if we didn't reach the end of the script
+	if(currentLoop!==textScript.script.length)
+	{
+		var textToCopy="";
+		
+		if(textScript.script[currentLoop].type==="TXT")
+		{
+			if(textScript.script[currentLoop].name)
+			{
+				textToCopy+=textScript.script[currentLoop].name+"<br />";
+			}
+			textToCopy+=textScript.script[currentLoop].text.replace(/##/g, "<br />");
+		}
+		else if(textScript.script[currentLoop].type==="SELECT")
+		{
+			for(var i=1;i<=textScript.script[currentLoop].count;i++)
+			{
+				textToCopy+=textScript.script[currentLoop]['select'+i]+"<br />";
+			}
+		}
+	
+		copyTextToClipboard(textToCopy); 
+	}
+}
+
+/*
+$(document).on('copy', function(event){
+  var e=event.originalEvent;
+  
+  event.preventDefault();  //writes our custom data, not data from the selection, to the clipboard
+  
+  e.clipboardData.setData('text/plain', '　……');
+  e.clipboardData.setData('text/html', '　……');
+});
+*/
+
+//copies the passed text to the clipboard, returning true if the command worked or false otherwise
+function copyTextToClipboard(text)
+{
+  //sets the text in a hidden element in the DOM so that we can make a selection out of it 
+  $copySelectionHelper.html(text);
+	//create a range out of the text and add it to the selection
+	var range=document.createRange();
+	range.selectNode($copySelectionHelper[0]);
+	//range.selectNodeContents($copySelectionHelper[0]);
+	var s=window.getSelection();
+	if(s.rangeCount>0)
+	{
+		s.removeAllRanges();
+	}
+	s.addRange(range);  
+	//
+	//console.log(s.toString());
+	var worked=false;
+	try{
+	 //try to use the copy command
+	 worked=document.execCommand('copy');
+	 
+	 if(!worked)
+	 {
+		 //console.log("Error: Failed to copy! Not in a semi-trusted event handler");
+	 }
+	}
+	catch(error){
+		//console.log("Error: Copy command doesn't work");
+	}
+	s.removeAllRanges();
+
+	return worked;
+}
+
+function preloadStaticImages()
+{
+	//preload predefined images like the UI buttons 
+	addImageToPreload("data/system/misc/hs_button03a.png", "permanent");
+	addImageToPreload("data/system/misc/hs_button04.png", "permanent");
+	addImageToPreload("data/system/misc/hs_button02a.png", "permanent");
+	addImageToPreload("data/system/misc/hs_button02b.png", "permanent");
+	addImageToPreload("data/system/misc/hs_button01.png", "permanent");
+	addImageToPreload("data/system/misc/hs_button03b.png", "permanent"); 
+	addImageToPreload("data/system/misc/next.gif", "permanent");
+	//
+	addImageToPreload("data/system/misc/sceneBorder.png", "permanent");
+	addImageToPreload("data/system/misc/scanline_effect.png", "permanent");
+	addImageToPreload("data/system/misc/menu_left_border.png", "permanent");
+	addImageToPreload("data/system/misc/menu_item_bg_pattern.png", "permanent");
+	addImageToPreload("data/system/misc/menu_right_border.png", "permanent");
+	addImageToPreload("data/system/misc/menu_left_border_hover.png", "permanent");
+	addImageToPreload("data/system/misc/menu_item_bg_pattern_hover.png", "permanent");
+	addImageToPreload("data/system/misc/menu_right_border_hover.png", "permanent");
+	addImageToPreload("data/system/misc/header_bg_pattern.png", "permanent");
+	addImageToPreload("data/system/colorbox/close.png", "permanent");
+	addImageToPreload("data/system/colorbox/config_bg.png", "permanent");
+	addImageToPreload("data/system/misc/red_button.png", "permanent");
+	addImageToPreload("data/system/misc/text_area_empty.png", "permanent");
+	addImageToPreload("data/system/bg/bg_8.png", "permanent");
+	addImageToPreload("data/system/bg/bg_10.png", "permanent");
+	addImageToPreload("data/system/misc/hs_window_txt.png", "permanent");
+	//
+	//start page images
+	addImageToPreload("data/system/misc/top_chara_1.png", "temp");  
+	addImageToPreload("data/system/misc/top_chara_2.png", "temp");  
+	addImageToPreload("data/system/misc/top_chara_3.png", "temp");	
+	addImageToPreload("data/system/misc/top_page.png", "temp");	
+	addImageToPreload("data/system/misc/top_filter.png", "temp");	
+	addImageToPreload("data/system/misc/top_page_inner_1.png", "temp");	
+	addImageToPreload("data/system/misc/logo.png", "temp");
+	addImageToPreload("data/system/misc/game_start.png", "temp");	
+	addImageToPreload("data/system/misc/game_start_over.png", "temp");	
+	//
+}
+
+//run the animations on the first page and finally display the "game start" button when done
+function startPageAnimation() 
+{
+	//START LOADING THE FIRST PAGE //
+	//loading variable is initially set to true
+	
+	var duration=350;
+	
+	//Load the start area animations
+	$("#loadingAreaEffect").transition({
+		opacity: 0,
+		}, duration, 'linear', function() {
+			$("#top_chara_1").transition({
+				opacity: 1,
+				}, duration, 'linear', function() {
+					$("#top_chara_2").transition({
+						opacity: 1,
+						}, duration, 'linear', function() {
+							$("#top_chara_3").transition({
+								opacity: 1,
+								}, duration, 'linear', function() {
+									$("#gameStart").animate({
+										opacity: 1
+										},{
+										//sync the "fade in" with the logo
+										step:function(now, fx){
+											$logo.css("opacity", now);
+										}, 
+										duration:duration,
+										easing:'linear',
+										complete:function() {			
+										  $("#gameStart").addClass("active");
+											loading=false;
+										}});
+							});
+					});
+			});
+	});
+}
+/////////////////////////////////////////////////////////////////////////////
+
+//Initialize variables//
+var textScript=null;
+
+//static preload class that handles temporary and permanent storage
+var preload={
+  loadedResources:0,
+  nrOfResources:0,
+  
+  //stores the permanent resources, indexed by resource path (src)
+  permanent:{},
+  temp:{},
+  //free all the temporary resources that has been previously preloaded
+  freeTempResources:function(){
+    	
+    //the images have been appended to the preloadWrapper for decoding, so remove them from the DOM first
+	  $preloadWrapper.html("");
+  
+    this.loadedResources=0;
+	  this.nrOfResources=0;
+	  this.temp={};
+  },
+  //remove a resource from permanent storage, indexed by path
+  removeFromPermanent:function(path){
+    //remove the item from the DOM (resides in preloadWrapperPermanent)
+    $(this.permanent[path]).remove();
+    delete(this.permanent[path]);
+  }
+};
+//
+
+//skipping timer
+var skipId=null;
+//temporary effect element
+var $effectArea=null;
+//current main image, switches after the running of effects
+var $mainImage=$();
+//the image that was active before the currently displayed image
+//saved to fix a firefox image rendering bug where it takes some time to render the appended image,
+//so I can not immediately remove the old image before the new image has completed it's rendering
+var $oldImage=$();
+
+var $currentCGImage=$();
+
+//current audio assigned a placeholder audio so method calls like pause() on it doesn't produce errors before a reference to a real sound has been set
+//var currentAudio=new Audio();
+var currentAudio=null;
+
+//used to save the current volume when you click on the "mute" button, used to restore the volume later when it becomes unmuted
+var oldMaxVoiceVolume=0;
+
+//current event, updated by doNextEvent()
+var current=0;
+//
+//if the ctrl key is active (held down)
+var ctrlkeyState=false;
+
+//global loading variable 
+//starts as "true", initially disabling interaction
+//will first be set to false at the end of startPageAnimation() function, where interaction begins
+var loading=true;
+//the id of the next scene path to play
+var nextPath=null;
+//the id of the current scene in the scripts array
+var index=null;
+
+var waitingTimer={
+  timer:null,
+  complete:null
+};
+
+var fullscreen=false;
+
+var musicPath="data/system/music/";
+
+var musicList={
+  tracks:[{
+    id:musicPath+"0.ogg",
+    name:"Ｄｅｍｏｎ′ｓ　Ａｒｅｎａ"
+  },{
+    id:musicPath+"1.ogg",
+    name:"Ｌａｓｔ　Ｂａｔｔｌｅ"
+  },{
+    id:musicPath+"2.ogg",
+    name:"対魔忍"
+  },{
+    id:musicPath+"3.ogg",
+    name:"Ｓｏｃｉｅｔｙ　ｏｆ　Ｄａｒｋｎｅｓｓ"
+  },{
+    id:musicPath+"4.ogg",
+    name:"Ｄａｎｃｅ　ｏｆ　Ｄａｒｋｎｅｓｓ"
+  },{
+    id:musicPath+"5.ogg",
+    name:"Ｆｌｉｇｈｔ！"
+  },{
+    id:musicPath+"6.ogg",
+    name:"ｓｉｇｎａｌ"
+  },{
+    id:musicPath+"7.ogg",
+    name:"Ａｓｕｋａ"
+  },{
+    id:musicPath+"8.ogg",
+    name:"五車学園"
+  },{
+    id:musicPath+"9.ogg",
+    name:"胸に残る感じ・・・"
+  },{
+    id:musicPath+"10.ogg",
+    name:"Ｕｓｕａｌ　ｌｉｆｅ"
+  },{
+    id:musicPath+"11.ogg",
+    name:"ａｌｌｕｒｅｍｅｎｔ"
+  },{
+    id:musicPath+"12.ogg",
+    name:"越えてしまった一線・・・"
+  },{
+    id:musicPath+"13.ogg",
+    name:"計略"
+  },{
+    id:musicPath+"14.ogg",
+    name:"窮地"
+  },{
+    id:musicPath+"15.ogg",
+    name:"恐怖"
+  },{
+    id:musicPath+"16.ogg",
+    name:"Ｄｅｓｉｒｅ　Ｌｏｏｍｉｎｇ"
+  },{
+    id:musicPath+"17.ogg",
+    name:"Ｅｄｗｉｎ　Ｂｌａｃｋ"
+  },{
+    id:musicPath+"18.ogg",
+    name:"Ｄ．Ｓ．Ｏ"
+  },{
+    id:musicPath+"19.ogg",
+    name:"呪縛"
+  },{
+    id:musicPath+"20.ogg",
+    name:"闇の支配都市ヨミハラ"
+  }],
+  current:null,
+  currentMusic:new Audio(),
+  loop:false
+};
+
+
+musicList.init=function(maxMusicVolume){
+  this.current=16;
+  
+  //loop through all the loaded songs and assign the ended event to all of them
+	for(var k=0;k<21;k++)
+	{
+	  //fires when a song has completed playing, but not when it's interrupted
+		$(preload.permanent[musicPath+k+".ogg"]).on("ended", function(event){
+		  musicList.next();
+	  });
+	}
+  
+  //if music volume is 0 at the start of the game, don't start playing the first track
+  this.playTrack(this.current);
+  if(maxMusicVolume!==0)
+  {
+    //do this insane shit otherwise the width isn't calculated correctly in firefox when updating the inner html
+    $textScroll.attr("width", "398");
+    $textScroll.html(this.current+".&nbsp; "+this.tracks[this.current].name);
+    $textScroll.attr("width", "401");
+    //
+  }
+  else
+  {
+    this.pause();
+    $textScroll.html("<span style='margin-left:400px;margin-right:15px;'>&nbsp;</span>");
+  }
+};
+musicList.play=function(){
+  //$music[0].play();
+  var playing=this.currentMusic.play();
+  catchAndIgnorePromiseError(playing); //Ignore Chrome v50 bug
+  
+  $textScroll.attr("width", "398");
+  $textScroll.html(this.current+".&nbsp; "+this.tracks[this.current].name);
+  $textScroll.attr("width", "401");
+};
+musicList.toggleLoop=function(){
+  $("#music_loop").toggleClass("loop");
+  if($("#music_loop").hasClass("loop"))
+  {
+    //$music.attr("loop", "loop");
+    this.loop=true;
+  }
+  else
+  {
+    //$music.removeAttr("loop");
+    this.loop=false;
+  }
+  this.currentMusic.loop=this.loop;
+};
+musicList.pause=function(){
+  //$music[0].pause();
+  this.currentMusic.pause();
+  $textScroll.html("");
+};
+musicList.playTrack=function(track){
+  //$music[0].src=this.tracks[track].id;
+  this.currentMusic.pause();
+    
+  this.currentMusic=preload.permanent[musicPath+track+".ogg"];
+  this.currentMusic.volume=maxMusicVolume;
+  this.currentMusic.loop=this.loop;
+  this.currentMusic.currentTime=0;
+  var playing=this.currentMusic.play();
+  catchAndIgnorePromiseError(playing); //Ignore Chrome v50 bug
+   
+  this.current=track;
+
+  $textScroll.attr("width", "398");
+  $textScroll.html(this.current+".&nbsp; "+this.tracks[this.current].name);
+  $textScroll.attr("width", "401");
+};
+musicList.next=function(){	
+  if((this.current+1)===this.tracks.length)
+  {
+    this.current=0;
+  }
+  else
+  {
+    this.current++;
+  }
+  //$music[0].src=this.tracks[this.current].id;
+  this.currentMusic.pause();
+  
+  this.currentMusic=preload.permanent[musicPath+this.current+".ogg"];
+  this.currentMusic.volume=maxMusicVolume;
+  this.currentMusic.loop=this.loop;
+  this.currentMusic.currentTime=0;
+  var playing=this.currentMusic.play();
+  catchAndIgnorePromiseError(playing); //Ignore Chrome v50 bug
+  
+  $textScroll.attr("width", "398");
+  $textScroll.html(this.current+".&nbsp; "+this.tracks[this.current].name);
+  $textScroll.attr("width", "401");
+};
+musicList.prev=function(){
+  if((this.current-1)<0)
+  {
+    this.current=this.tracks.length-1;
+  }
+  else
+  {
+    this.current--;
+  }
+  //$music[0].src=this.tracks[this.current].id;
+  this.currentMusic.pause();
+  
+  this.currentMusic=preload.permanent[musicPath+this.current+".ogg"];
+  this.currentMusic.volume=maxMusicVolume;
+  this.currentMusic.loop=this.loop;
+  this.currentMusic.currentTime=0;
+  var playing=this.currentMusic.play();
+  catchAndIgnorePromiseError(playing); //Ignore Chrome v50 bug
+  
+  $textScroll.attr("width", "398");
+  $textScroll.html(this.current+".&nbsp; "+this.tracks[this.current].name);
+  $textScroll.attr("width", "401");
+};
+
+
+//array that has all the images of all the scenes, grouped on scene 
+var sceneImages=[];
+
+/*
+//TESTING
+localStorage.removeItem("maxVoiceVolume");
+localStorage.removeItem("skipSpeed");
+localStorage.removeItem("voiceCutoff");
+localStorage.removeItem("textAreaOpacity");
+localStorage.removeItem("backgroundColor");
+localStorage.removeItem("textColor");
+localStorage.removeItem("originalBackground");
+*/
+
+//load settings from local storage if they exist, else use a default value
+var maxVoiceVolume=(localStorage.getItem("maxVoiceVolume")!==null)?localStorage.getItem("maxVoiceVolume"):1;
+var maxMusicVolume=(localStorage.getItem("maxMusicVolume")!==null)?localStorage.getItem("maxMusicVolume"):1;
+var skipSpeed=(localStorage.getItem("skipSpeed")!==null)?localStorage.getItem("skipSpeed"):100;
+var voiceCutoff=(localStorage.getItem("voiceCutoff")!==null)?(localStorage.getItem("voiceCutoff")==='true'):false;
+var textAreaOpacity=(localStorage.getItem("textAreaOpacity")!==null)?localStorage.getItem("textAreaOpacity"):0.8;
+var backgroundColor=(localStorage.getItem("backgroundColor")!==null)?localStorage.getItem("backgroundColor"):"#000000";
+var textColor=(localStorage.getItem("textColor")!==null)?localStorage.getItem("textColor"):"#FFFFFF";
+var originalBackground=(localStorage.getItem("originalBackground")!==null)?(localStorage.getItem("originalBackground")==='true'):true;
+var boldText=(localStorage.getItem("boldText")!==null)?(localStorage.getItem("boldText")==='true'):false;
+var font=(localStorage.getItem("font")!==null)?localStorage.getItem("font"):"arial, sans-serif";
+var clipboardEnabled=(localStorage.getItem("clipboardEnabled")!==null)?(localStorage.getItem("clipboardEnabled")==='true'):false;
+//
+
+//globaly cached jQuery elements
+var $textWindow=null;
+var $loading=null;
+var $sceneArea=null;
+var $skip_button=null;
+//var $currentAudio=null;
+var $screenArea=null;
+var $textHolder=null;
+var $configWrapper=null;
+var $logo=null;
+var $textAreaBackground=null;
+var $originalBackground=null;
+var $prev=null;
+var $next=null;
+var $pageNr=null;
+var $h_scenes=null;
+var $overlay=null;
+//var $music=null;
+var $textScroll=null;
+var $cgWrapper=null;
+var $history=null;
+var $preloadWrapper=null;
+var $preloadWrapperPermanent=null;
+var $copySelectionHelper=null;
+
+//
+
+//DOCUMENT READY START //
+$(document).ready(function(){
+/////////////////////////
+
+//cache regularely used and static DOM elements
+$textWindow=$("#textWindowWrapper");
+$loading=$("#loading");
+$sceneArea=$("#sceneArea");
+$skip_button=$("#skip_button");
+//$currentAudio=$("#currentAudio");
+$screenArea=$("#screenArea");
+$textHolder=$("#textHolder");
+$voice_button=$("#voice_button");
+$configWrapper=$("#configWrapper");
+$logo=$("#logo");
+$textAreaBackground=$("#textAreaBackground");
+$originalBackground=$("#originalBackground");
+$prev=$("#prev");
+$next=$("#next");
+$pageNr=$("#pageNr");
+$h_scenes=$("#h_scenes");
+//$music=$("#music");
+$cgWrapper=$("#cgWrapper");
+$history=$("#history");
+$preloadWrapper=$("#preloadWrapper");
+$preloadWrapperPermanent=$("#preloadWrapperPermanent");
+$copySelectionHelper=$("#copySelectionHelper");
+//
+
+//// register events ////
+
+//prevent the dragging of images.
+//also prevents the mouse "click" from firing if started dragging
+$("body").on("dragstart", function(event){
+	event.preventDefault();
+});
+
+
+$("#window_button").on("click", function(event){
+
+  if(loading)
+  {
+    return;
+  }
+
+  $textWindow.toggleClass("hide");
+  //the window has been hidden by the user himself
+  $textWindow.toggleClass("userHidden");
+
+});
+
+$(document).on("keydown", function(event){
+
+  if(loading)
+  {
+    return;
+  }
+
+  //32==space
+	if(event.which===32)
+	{
+	  //if scene area is active
+		if(!$sceneArea.hasClass("hide"))
+		{
+		  //hide or show the text window
+			if($textWindow.hasClass("hide"))
+			{
+				$textWindow.removeClass("hide");
+				$textWindow.removeClass("userHidden");
+			}
+			else
+			{
+				$textWindow.addClass("hide");
+				$textWindow.addClass("userHidden");
+			}
+		}
+	}
+	//can only use control when the h-scene area is active and the history log isn't visible //17==ctrl 
+	if(event.which===17 && $sceneArea.hasClass("active") && !$history.hasClass("show"))
+	{
+		toggleSkipping("start");
+	}
+});
+
+$(document).on("keyup", function(event){
+	//17==ctrl 
+	if(event.which===17)
+	{
+		toggleSkipping("stop");
+	}
+});
+
+//handle fullscreen funtionality
+$(document).on("keydown", function(event){
+  //if alt+enter or command+enter
+  if(event.which===13 && (event.altKey || event.metaKey))
+	{
+	  //enable or disable fullscreen based on it's current state
+	  toggleFullScreen();
+	  //event.preventDefault();
+	}
+});
+//
+//listen to fullscreen event, fires on alt+enter. However, it does not fire when pressing F11 or when using the GUI to enter fullscreen with a mouse click on the fullscreen option.
+$(document).on("webkitfullscreenchange mozfullscreenchange fullscreenchange MSFullscreenChange", function(event){
+  
+	if(!fullscreen)
+	{
+		$("body").css("overflow", "hidden");
+		
+		$(window).on("resize", scaleScreenArea);
+
+		scaleScreenArea();
+		
+		fullscreen=true;
+	}
+	else
+	{
+		$("body").css({
+			"overflow":"",
+			"height":""
+		});
+		
+		$("#bodyWrapper").css("margin", "");
+
+		$("#colorbox").css("margin-top", "0");
+
+		$("#bodyWrapper, #colorbox").css({
+			"-moz-transform":"",
+			"-webkit-transform":"",
+			"-o-transform":"",
+			"transform":"",
+			"-moz-transform-origin":"",
+			"-webkit-transform-origin":"",
+			"-o-transform-origin":"",
+			"transform-origin":""
+		});
+
+		$(window).off("resize", scaleScreenArea);
+		
+		fullscreen=false;
+	}
+});
+
+//end the scene and return to scene select
+$("#end_button").on("click", endScene);
+
+//on click on the scene area, show the text window if hidden. if not hidden, advance the events.
+//on click does not fire on mouse right click. contextmenu fires instead
+$sceneArea.on("click contextmenu", function(event){
+
+  //prevent the pop-up menu if right click
+  event.preventDefault();
+  
+  if(loading)
+  {
+    return;
+  }
+      
+  //if event is "contextmenu" it's a right click, or other type of input like mac ctrl+left click
+  if(event.type==="contextmenu")
+  {     
+    if($textWindow.hasClass("hide"))
+    {
+			$textWindow.removeClass("hide");
+			$textWindow.removeClass("userHidden");
+    }
+    else
+    {
+			$textWindow.addClass("hide");
+			$textWindow.addClass("userHidden");
+    }
+  }
+  //2 === mouse wheel
+  //handle "click" event in browsers that dispatch it for mouse wheel click (ie chrome) and do nothing
+  //the event is instead handled in the "mouseup" event handler
+  else if(event.which===2)
+  {
+    return;
+  }
+  //if text window is hidden, enable it but don't advance the events
+  else if($textWindow.hasClass("hide"))
+  {
+    $textWindow.removeClass("userHidden");
+    $textWindow.removeClass("hide");
+  }
+  else
+  {
+    advanceEvent();
+  }
+});
+
+//prevent the default mouse wheel click action (scroll lock etc)
+$sceneArea.on("mousedown", function(event){
+  //2 === mouse wheel
+  if(event.which===2)
+  {
+    event.preventDefault();
+  }
+  
+});
+//handle click on mouse wheel (repeat voice)
+$sceneArea.on("mouseup", function(event){
+
+  if(loading)
+  {
+    return;
+  }
+  
+  //2 === mouse wheel
+  if(event.which===2)
+  {
+    $textWindow.removeClass("userHidden");
+    $textWindow.removeClass("hide");
+    
+    //if the current event is a text event with a voice file, allow voice repeat playback
+    if(textScript['script'][current-1].type==="TXT" && textScript['script'][current-1].src)
+    {
+		  //reload the audio file so we can play it from the beginning again
+		  //$currentAudio[0].load();
+			//$currentAudio[0].play();
+			//if the audio is currently seeking, do nothing
+			//if(!$currentAudio[0].seeking) //CHANGE
+			if(!currentAudio.seeking)
+			{
+  		  //starts seeking to the beginning, when done it will automatically resume playback if not paused
+	  		//$currentAudio[0].currentTime=0;
+	  		currentAudio.currentTime=0; //CHANGE
+	  		//unpause it if paused. if it is still seeking it should delay the play() operation until the seeking is done.
+	  		//$currentAudio[0].play(); //CHANGE
+	  		//set the current volume before any playback
+	  		currentAudio.volume=maxVoiceVolume;
+	  		var playing=currentAudio.play();
+	  		catchAndIgnorePromiseError(playing); //Ignore Chrome v50 bug  		  
+			}
+    }
+  }
+});
+
+//contextmenu fires on mouse right click
+$(document).on("contextmenu", function(event){
+  //prevent the pop-up menu
+  event.preventDefault();
+});
+
+//Code handling the history log //
+//on mouse wheel up, show the history log
+$sceneArea.on("wheel mousewheel", function(event){
+
+  if(loading)
+  {
+    return;
+  }
+  
+  //prevent mousewheel event from firing if the wheel event exist. Also prevent default scrolling
+  event.preventDefault();
+  
+  var ev=event.originalEvent;
+  /*      
+  console.log($history[0].scrollHeight);
+  */
+  var scrollUp=false;
+  
+  //chrome and newer browsers
+  if(ev.deltaY!==undefined)
+  {
+    //mouse wheel up
+    if(ev.deltaY<0)
+    {
+      scrollUp=true;
+    }
+  }
+  //chrome, opera 12, safari 5.1
+  else if(ev.wheelDeltaY!==undefined)
+  {
+    if(ev.wheelDeltaY>0)
+    {
+      scrollUp=true;
+    }
+  }
+  //IE 7+. Does not support horizontal scroll
+  else if(ev.wheelDelta!==undefined)
+  {
+    if(ev.wheelDelta>0)
+    {
+      scrollUp=true;
+    }
+  }
+  
+  //mouse wheel up
+  if(scrollUp)
+  {
+    showTextLog();
+  }
+  
+});
+
+//handle show/hide text log on "backspace" and repeat current voice, if any, with "V"
+$(document).on("keydown", function(event){
+
+  if(loading)
+  {
+	  if(event.which===8)
+		{
+			event.preventDefault();
+		}
+    return;
+  }
+  //8===backspace
+  if(event.which===8)
+  {
+    event.preventDefault();
+    //if in a scene
+    if($sceneArea.hasClass("active"))
+    {
+      //switch between showing and hiding the text log with backspace
+			if(!$history.hasClass("show"))
+			{
+				showTextLog();
+			}
+			else
+			{
+				hideTextLog();
+			}
+    }
+  }
+  //if in a scene and pressed down "V", repeat the current voice, if any //86==="v"
+  //65===A //===65 when pressing A pos on english keyboard, A pos on french keyboard (which is different physical position), and ф on russian keyboard (has same physical position as A on english keyboard)
+  //it is more reliable to use "keypress" event.which to check a-Z characters, however using "keydown" event.which enables more international keyboard variants to use the hotkey
+  else if(event.which===86 && $sceneArea.hasClass("active"))
+  {
+    //if the current event is a text event with a voice file, allow voice repeat playback
+    if(textScript['script'][current-1].type==="TXT" && textScript['script'][current-1].src)
+    {
+			//reload the audio file so we can play it from the beginning again
+			//$currentAudio[0].load();
+			//$currentAudio[0].play();
+			//if(!$currentAudio[0].seeking) //CHANGE
+			if(!currentAudio.seeking)
+			{
+  		  //starts seeking to the beginning, when done it will automatically resume playback if not paused
+	  		//$currentAudio[0].currentTime=0;  //CHANGE
+	  		currentAudio.currentTime=0;
+	  		//unpause it if paused. if it is still seeking it should delay the play() operation until the seeking is done.
+	  		//$currentAudio[0].play();  //CHANGE
+	  		//set the current volume before any playback
+	  		currentAudio.volume=maxVoiceVolume;
+	  		var playing=currentAudio.play();
+	  		catchAndIgnorePromiseError(playing); //Ignore Chrome v50 bug
+			}
+    }
+  }
+});
+
+//prevent the event from reaching sceneArea where the history log would be showed otherwise
+$history.on("wheel mousewheel", function(event){
+  event.stopPropagation();
+});
+
+//prevent clicks from reaching sceneArea and remove the log on right click if it's active
+$history.on("click contextmenu", function(event){
+
+  event.preventDefault();
+  event.stopPropagation();
+  
+  if(loading)
+  {
+    return;
+  }
+  
+  //"contextmenu", usually a right mouse button click
+  if(event.type==="contextmenu")
+  {
+    hideTextLog();
+  }
+
+});
+
+//if the history item is a voiced text, play the audio
+$history.on("click", ".historyItem", function(event){
+
+  var dataSrc=$(this).attr("data-src");
+  //console.dir(currentAudio);
+  //console.log(currentAudio.src)
+  //console.log(currentAudio===preload.temp[dataSrc]);
+  
+  //if the text is voiced
+  if(dataSrc)
+  {
+    //if the current audio source is the same as the newly selected item, start playing from the beginning
+    if(currentAudio===preload.temp[dataSrc])
+    {
+      //if the audio is currently seeking, do nothing
+			if(!currentAudio.seeking)
+			{
+				//starts seeking to the beginning, when done it will automatically resume playback if not paused
+				currentAudio.currentTime=0;
+	  		//set the current volume before any playback
+	  		currentAudio.volume=maxVoiceVolume;
+				//unpause it if paused. if it is still seeking it should delay the play() operation until the seeking is done.
+				var playing=currentAudio.play();
+				//If the play() promise gets rejected, ignore it. Workaround for a bug in Chrome v50.
+				catchAndIgnorePromiseError(playing);
+			}
+    }
+    else
+    {
+      if(currentAudio)
+      {
+        //pause current playback, if any
+        currentAudio.pause();
+        currentAudio.currentTime=0;
+      }
+      //get the new source, rewind it if it has already been played some before, then play it
+      currentAudio=preload.temp[dataSrc];
+      currentAudio.currentTime=0;
+	  	//set the current volume before any playback
+	  	currentAudio.volume=maxVoiceVolume;
+      var playing=currentAudio.play();
+      //If the play() promise gets rejected, ignore it. Workaround for a bug in Chrome v50.
+			catchAndIgnorePromiseError(playing);
+    }
+    /*
+    //var currentSrc=$currentAudio.attr("src"); //CHANGE
+    var currentSrc=currentAudio.src;
+    //if the current audio source is the same as the selected audio source, start playing from the beginning
+    if(currentSrc===dataSrc)
+    {
+			//if the audio is currently seeking, do nothing
+			//if(!$currentAudio[0].seeking) //CHANGE
+			if(!currentAudio.seeking)
+			{
+				//starts seeking to the beginning, when done it will automatically resume playback if not paused
+				//$currentAudio[0].currentTime=0;  //CHANGE
+				currentAudio.currentTime=0;
+				//unpause it if paused. if it is still seeking it should delay the play() operation until the seeking is done.
+				//$currentAudio[0].play();  //CHANGE
+				currentAudio.play();
+			}
+    }
+    //else load the new audio source
+    else
+    {
+      //$currentAudio.attr("src", dataSrc); CHANGE
+      currentAudio=preload.temp[dataSrc];
+      currentAudio.play();
+    }
+    */
+  }
+});
+
+//prevent the event from bubbling to sceneArea and activating voice repeat
+$history.on("mouseup", function(event){
+  
+  //2==middle mouse button
+  if(event.which===2)
+  {
+    event.stopPropagation();
+  }
+
+});
+////////////////////////////////////////////////////////////////////////
+
+
+//any event that bubbles up to UIButtons wrapper, stop the propogation.
+//this is lazy, should stop propogation on the individual UI elements
+$("#UIButtons").on("click", function(event){
+  return false;
+});
+
+//toggle voice volume on/off based on max value set in settings
+$voice_button.on("click", function(event){
+
+  if(loading)
+  {
+    return;
+  }
+
+  $voice_button.toggleClass("off");
+  if($voice_button.hasClass("off"))
+  {
+    //$currentAudio[0].volume=0; /CHANGE
+    oldMaxVoiceVolume=maxVoiceVolume;
+    maxVoiceVolume=0;
+  }
+  else
+  {
+    //$currentAudio[0].volume=maxVoiceVolume; //CHANGE
+    maxVoiceVolume=oldMaxVoiceVolume;
+  }
+  
+  if(currentAudio)
+  {
+    currentAudio.volume=maxVoiceVolume;
+  }
+  
+});
+   
+//toggle skipping on/off
+$skip_button.on("click", function(event){
+
+  if(loading)
+  {
+    return;
+  }
+	toggleSkipping();
+});
+
+
+//PANIC
+$(document).on("keydown", function(event){
+  if(event.which==27) //escape==27
+  {
+		//YOU COULD HAVE STOPPED THIS 
+		musicList.currentMusic.pause();
+		stopEvent();
+		toggleSkipping("stop");
+  
+    $("html").css({
+      height:"100%"
+    });
+    
+    $("body").css({
+      width:"auto",
+      height:"100%",
+      "text-align":"center"
+    });
+    
+    document.title="Excel";
+    $('link[rel="icon"]').attr("href", "data/system/misc/excel.png");
+    
+    $("body").html('<video src="data/system/misc/wet_high.webm" autoplay loop style="height:100%;vertical-align:top;" />');   
+  }
+});
+
+
+//when clicking on a h-scene or cg-scene, construct the appropriate view page
+$(".pageWrapper").on("click", ".scene", function(event){
+
+  if(loading)
+  {
+    return;
+  }
+
+	//get index of start of scene
+	index=$(this).attr("data-index");
+	var viewPage=$(event.delegateTarget).attr("data-viewPage");
+
+	//start appropriate page build function 
+	if(viewPage==="cgWrapper")
+	{
+	  //start loading animation, passing in a function to run between the transitions
+		startLoading(function(){
+		
+			$(event.delegateTarget).removeClass("active"); 
+			$("#"+viewPage).addClass("active"); 
+			//hide the previous and next page buttons because they are not applicable
+		  $prev.add($next).add($pageNr).addClass("hide");
+		  
+			getCG("start", index); //has access to the index variable in the closure
+		});
+	}
+	else if(viewPage==="sceneArea")
+	{
+		//if the script is made up of parts, start with the first one
+		if(Object.prototype.toString.call(scripts[index])==="[object Array]")
+		{
+			var selectedScript=scripts[index][0];
+		}
+		else
+		{
+			var selectedScript=scripts[index];
+		}
+	  
+		//copies the next TXT event's text to the clipboard
+		//we must do this right now in the event handler to get the text of the first TXT event, because later it will be to late and the "copy" command won't work
+		if(clipboardEnabled)
+		{
+		  copyNextTXTEvent(selectedScript, 0);
+		}
+	
+	  //start loading animation, passing in a function to run between the transitions. Pass in false because we don't want to run the endLoading animation
+		startLoading(function(){
+			$(event.delegateTarget).removeClass("active"); 
+			$("#"+viewPage).addClass("active"); 
+			//hide the previous and next page buttons because they are not applicable
+			$prev.add($next).add($pageNr).addClass("hide");
+			
+			//constructs the scene and runs the passed function when preloading is done
+			constructScene(selectedScript, function(){
+				//when preloading is done, slide the door down again and when that is done, start event handling
+				endLoading(function(){
+					advanceEvent();
+				});
+				
+			}); 
+			
+		}, false);
+	}
+});
+
+//get the next or previous image in the scene list based on mouse click
+$cgWrapper.on("click contextmenu", function(event){
+
+  if(loading)
+  {
+    return;
+  }
+  
+  //"contextmenu", usually a right mouse button click
+	if(event.type==="contextmenu")
+	{
+		getCG("prev");
+	}
+	else
+	{
+    getCG("next");
+	}
+});
+// 
+
+//change background on click in the settings box
+$(".backgroundColorPicker").on("click", function(event){
+
+  $("body").css("background-color", "#"+$(this).attr("data-color"));
+  localStorage.setItem("backgroundColor", "#"+$(this).attr("data-color"));
+
+});
+
+// COLORBOX EVENTS // 
+//used to display and hide the wrapper when opening and closing the lightbox 
+$(document).bind('cbox_load', function(){
+  $configWrapper.css("display","block");
+});  
+
+$(document).bind('cbox_cleanup', function(){
+  $configWrapper.css("display","none");
+});
+//
+
+//change "voice cut of" on event advance in settings box
+$("#voiceCutoff").on("change", function(event){
+  if($(this).prop("checked"))
+  {
+    voiceCutoff=true;
+  }
+  else
+  {
+    voiceCutoff=false;
+  }
+  localStorage.setItem("voiceCutoff", voiceCutoff.toString());
+});
+//
+
+//change "copy text to clipboard on click" on scene on/off
+$("#clipboardEnabled").on("change", function(event){
+  //check if the browser supports the copy command by doing a test copy
+  var works=copyTextToClipboard(""); 
+  //if it doesn't work, display an alert and set the checkbox to unchecked again
+  if(!works)
+  {
+    $(this).prop("checked", false);
+    
+    alert("This browser does not support copy to clipboard functionality\n\nSupported browsers are:\nChrome:43+\nOpera:30+\nFirefox:41+");
+    return;
+  }
+
+  if($(this).prop("checked"))
+  {
+    clipboardEnabled=true;
+  }
+  else
+  {
+    clipboardEnabled=false;
+  }
+  localStorage.setItem("clipboardEnabled", clipboardEnabled.toString());
+});
+//
+
+//change "use original text area background" in settings box
+$("#originalBackground").on("change", function(event){
+  //if use default background checked
+  if($(this).prop("checked"))
+  {
+    $("#textWindow").addClass("originalBackground");
+    $textAreaBackground.addClass("hide");
+    $(this).closest(".sliderWrapper").find(".rightLabel").text('N/A');
+  }
+  else
+  {
+    $("#textWindow").removeClass("originalBackground");
+    $textAreaBackground.removeClass("hide");
+    $('#textAreaOpacity.nstSlider').nstSlider('refresh');
+  }
+  localStorage.setItem("originalBackground", $(this).prop("checked").toString());
+});
+//
+
+//on click on a menu item, determine and build the selected scene list
+$("#menuItemsWrapper ").on("click", ".menuItem", switchAndBuildScene);
+
+/*
+function pointIsInPoly(p, polygon)
+{
+    var isInside = false;
+    var minX = polygon[0].x, maxX = polygon[0].x;
+    var minY = polygon[0].y, maxY = polygon[0].y;
+    for (var n = 1; n < polygon.length; n++) {
+        var q = polygon[n];
+        minX = Math.min(q.x, minX);
+        maxX = Math.max(q.x, maxX);
+        minY = Math.min(q.y, minY);
+        maxY = Math.max(q.y, maxY);
+    }
+
+    if (p.x < minX || p.x > maxX || p.y < minY || p.y > maxY) {
+        return false;
+    }
+
+    var i = 0, j = polygon.length - 1;
+    for (i, j; i < polygon.length; j = i++) {
+        if ( (polygon[i].y > p.y) != (polygon[j].y > p.y) &&
+                p.x < (polygon[j].x - polygon[i].x) * (p.y - polygon[i].y) / (polygon[j].y - polygon[i].y) + polygon[i].x ) {
+            isInside = !isInside;
+        }
+    }
+
+    return isInside;
+}
+
+$("#gameStart").on("mousemove", function(event){
+
+  //position of mouse relative to the viewport
+  var clientX=event.clientX;
+  var clientY=event.clientY;
+  //position of element relative to the viewport
+  var pos=this.getBoundingClientRect(); 
+  var elPos={
+    x:Math.floor(pos.left),
+    y:Math.floor(pos.top)
+  };
+  
+  var p={
+    x:clientX-elPos.x,
+    y:clientY-elPos.y
+  };
+  
+  var gameStartImagePolygon=[
+    {
+      x:342,
+      y:0
+    }, {
+      x:342,
+      y:89
+    }, {
+      x:50,
+      y:89
+    }, {
+      x:8,
+      y:50
+    }, {
+      x:8,
+      y:38
+    }, {
+      x:50,
+      y:0
+    }
+  ];
+  
+  if(pointIsInPoly(p, gameStartImagePolygon))
+  {
+    $(this).addClass("gameStartHover");
+  }
+  else
+  {
+    $(this).removeClass("gameStartHover");
+  }
+});
+*/
+
+//start game button on the first page //hmm, check this
+$("#gameStart").on("click", function(event){
+  
+	if(loading)
+	{
+	  return;
+	}
+		
+	//start preloading of music
+	//disables interaction
+	loading=true;
+	
+	var that=this;
+	      
+	for(var k=0;k<21;k++)
+	{
+	  //when the preloading is done, switch to and build the scene list
+		addSoundToPreload(musicPath+k+".ogg", "permanent", function(){
+		  
+			$(".pageWrapper.active").removeClass("active");
+			$("#mainArea, #header").removeClass("hide");
+		
+			var page=$(that).attr("data-page");
+			$("#"+page).addClass("active");
+			
+			//insert marquee after the header has been displayed, because initializing the marquee while it's hidden creates a strange bug in chrome 37+
+			//scratch that, the mere presence of the marquee blurs the entire page when the page is scaled in fullscreen (alt+enter). chrome 37+? animation rendering bug?
+			//replaced the marquee with a div until the bug "eventually" gets fixed
+			//$textScroll=$('<marquee id="textScroll" class="stylish" direction="left" width="400" scrolldelay="20" truespeed="truespeed" scrollamount="1">  </marquee>');
+			$textScroll=$('<div id="textScroll" class="stylish">  </div>');
+			
+			$("#header").prepend($textScroll);
+			//
+			
+			//build the scene/cg list based on data-page on menu item and put it in the same element with that id 
+			buildScene(0, page);
+			
+			//free old preloaded resources
+		  preload.freeTempResources();
+		  
+			//start the first song
+		  musicList.init(maxMusicVolume);
+			
+			loading=false;
+		});
+	}
+	//
+});
+
+//on click on navigational buttons "next" and "previous"
+//build scene page list based on which area is currently active
+$next.add($prev).on("click", function(event){
+
+  if(loading)
+  {
+    return;
+  }
+  
+  //get which area is active and pass it on to buildScene()
+  var id=$(".pageWrapper.active").attr("id");
+
+  var offset=$(this).attr("data-sceneOffset");
+	//cast to number 
+	offset=+offset;
+
+  buildScene(offset, id);
+});
+
+//when the window loses focus, if ctrl is pressed down, stop skipping. could be done unintentionally while switching tabs
+$(window).on("blur", function(event){
+  //if skipping, turn it off
+	toggleSkipping("stop");
+	//if audio is playing, stop it
+	//$currentAudio[0].pause(); //CHANGE
+	if(currentAudio)
+	{
+	  currentAudio.pause();
+	  currentAudio.currentTime=0;
+	}
+
+});
+//
+
+
+//assign values set in local storage or default values if none are found
+$("#voiceVolume").attr("data-cur_min", maxVoiceVolume*100);
+$("#musicVolume").attr("data-cur_min", maxMusicVolume*100);
+$("#textAreaOpacity").attr("data-cur_min", textAreaOpacity*100);
+$("#skipSpeed").attr("data-cur_min", skipSpeed);
+$("#voiceCutoff").prop("checked", voiceCutoff);
+$("body").css("background-color", backgroundColor);
+$originalBackground.prop("checked", originalBackground);
+
+$("#boldText").prop("checked", boldText);
+if(boldText)
+{
+  $("body").css("font-weight", "bold");
+  $("#testText").css("font-weight", "bold");
+}
+else
+{
+  $("body").css("font-weight", "normal");
+  $("#testText").css("font-weight", "normal");
+}
+
+//set selected font
+$("body").css("font-family", font);
+$("#testText").css("font-family", font);
+
+//set changed on select box
+
+$("#textColor").prop("value", textColor);
+$("#testText").css("color", textColor);
+$("#textHolder").css("color", textColor);
+
+if(originalBackground)
+{
+	$("#textWindow").addClass("originalBackground");
+	$textAreaBackground.addClass("hide");
+	$originalBackground.parent().siblings(".rightLabel").text('N/A');
+}
+else
+{
+	$("#textWindow").removeClass("originalBackground");
+	$textAreaBackground.removeClass("hide");
+}
+
+$("#clipboardEnabled").prop("checked", clipboardEnabled);
+/////////////////////////////////////////////////////////////////////////
+
+
+//COLOR PICKER//
+$("#textColor").spectrum({
+  showButtons: false,
+  replacerClassName: 'colorPickerBox',
+  containerClassName: 'containerColorPicker',
+  move: function(color){
+    $("#testText").css("color", color.toHexString());
+    $("#textHolder").css("color", color.toHexString());
+    localStorage.setItem("textColor", color.toHexString());
+  }
+});
+////////////////
+
+//lightbox//
+$('#config').colorbox({
+	opacity:0.75,
+	transition:"speed",
+	speed:0,
+	fadeOut:0,
+	className:"settingsBox",
+	top:"60px",
+	//width:"500px",
+	//initialWidth:"500px",
+	//height:"500px",
+	//initialHeight:"500px",
+	inline:true,
+	href:$configWrapper
+});
+//
+
+// value slider // 
+$('.nstSlider').nstSlider({
+  "left_grip_selector": ".leftGrip",
+  "value_changed_callback": function(cause, leftValue, rightValue) {
+  
+	  var id=$(this).attr("id");
+	  
+	  //which slider was used
+	  switch(id)
+	  {
+	    case "voiceVolume":
+	      //need value between 0 - 1 for audio element 
+	      var value=leftValue/100;
+	      
+				//set the selected volume to the global max volume 
+				maxVoiceVolume=value;
+				localStorage.setItem("maxVoiceVolume", maxVoiceVolume);
+				//$currentAudio[0].volume=maxVoiceVolume; //CHANGE
+				if(currentAudio)
+				{
+				  currentAudio.volume=maxVoiceVolume;
+				}
+				//if audio is currently muted by the "off" button in a scene, set it to "on" again
+				$voice_button.removeClass("off");
+	      break;
+	    case "musicVolume":
+	      //need value between 0 - 1 for audio element 
+	      var value=leftValue/100;
+	      
+				//set the selected volume to the global max volume 
+				maxMusicVolume=value;
+				localStorage.setItem("maxMusicVolume", maxMusicVolume);
+				//$music[0].volume=maxMusicVolume;
+				musicList.currentMusic.volume=maxMusicVolume;
+				
+	      break;
+	    case "textAreaOpacity":
+	      //if original background box is checked, do nothing
+	      if($originalBackground.prop("checked"))
+	      {
+	        return;
+	      }
+	      //need value between 0 - 1 for opacity css 
+	      var value=leftValue/100;
+	      $textAreaBackground.css({
+	        opacity:value
+	      });
+	      localStorage.setItem("textAreaOpacity", value);
+				
+	      break;
+	    case "skipSpeed":
+	      skipSpeed=leftValue;
+	      localStorage.setItem("skipSpeed", skipSpeed);
+	      break;
+	  }
+	  
+	  $(this).parent().find('.rightLabel').text(leftValue);
+  }
+});
+/////////////// 
+
+//test all available fonts before constructing the custom select box
+testAvailableFonts($("#testFontsHiddenElement"));
+
+//create custom style select box
+$("#fontChange").selectBoxIt({
+  "keydownOpen":false
+});
+
+//set the default or loaded value from local storage as the selected value in the select box
+var selectBox=$("#fontChange").data("selectBox-selectBoxIt");
+selectBox.selectOption(font);
+//
+
+//change font family in config lightbox on body and test element
+$("#fontChange").on("change", function(event){
+
+  var value=$(this).val();
+  $("body").css("font-family", value);
+  $("#testText").css("font-family", value);
+  
+  localStorage.setItem("font", value);
+
+});
+//
+
+//change text weight(bold) in config lightbox on body and test element
+$("#boldText").on("change", function(event){
+
+  if($(this).prop("checked"))
+  {
+    $("body").css("font-weight", "bold");
+    $("#testText").css("font-weight", "bold");
+    boldText=true;
+  }
+  else
+  {
+    $("body").css("font-weight", "normal");
+    $("#testText").css("font-weight", "normal");
+    boldText=false;
+  }
+  localStorage.setItem("boldText", boldText.toString());
+  
+});
+//
+
+$("#music_play").on("click", function(event){
+  musicList.play();
+});
+
+$("#music_stop").on("click", function(event){
+  musicList.pause();
+});
+
+$("#music_next").on("click", function(event){
+  musicList.next();
+});
+
+$("#music_prev").on("click", function(event){
+  musicList.prev();
+});      
+
+$("#music_loop").on("click", function(event){
+  musicList.toggleLoop();
+});
+
+/*
+//fires when a song has completed playing, but not when it's interrupted
+$music.on("ended", function(event){
+  musicList.next();
+});
+*/
+
+//
+/////////////////////////////////
+
+//use the window load event on the startpage to wait for the pre-loading of the start main image and also all images to animate 
+preloadStaticImages();
+
+// END OF DOCUMENT READY //
+});
+
+//Start the game on the window.load event by executing the start page animations
+//window load event also waits for images to load contructed wth the image constructor: new Image(""); 
+$(window).on("load", function(){
+
+  //show the start loading area and the footer
+  $("#loadingArea").addClass("active");
+  $("#footer").addClass("active");
+  //start intro animation
+  startPageAnimation();
+});
+
+
+sceneImages=getSceneImages();
+
+/*
+function getVoice(voiceURI)
+{
+  var voices=speechSynthesis.getVoices();
+  return voices.filter(function(voice) { return voice.voiceURI == voiceURI; })[0];
+}
+
+if('speechSynthesis' in window)
+{
+	var utterance=null;
+	
+	//wait on voices to be loaded async
+	speechSynthesis.onvoiceschanged=function(){
+	  //console.log(voices);
+		utterance = new SpeechSynthesisUtterance();
+		//utterance.voice=getVoice('Google 日本人');
+		//utterance.lang = 'ja-JP';
+	};
+}
+*/
+
+///////////////////////////
+</script>
+
+</body>
+</html>

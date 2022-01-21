@@ -1,0 +1,956 @@
+﻿
+html{
+  font-size: 62.5%;
+}
+
+body{
+	/*
+	width: 950px;
+	*/
+	/*font-family: Helvetica, Arial, 'Hiragino Kaku Gothic ProN', 'ヒラギノ角ゴ ProN W3', 'モリサワ 新ゴ R', 'Droid Sans', メイリオ, 'sans-serif';*/ /* iPhone・Android機種フォント */
+	font-family:arial,sans-serif;
+	
+	color: #000000;
+	background-color: #000;
+	font-size: 14px;
+	font-weight: normal;
+	line-height: 100%;
+	vertical-align: baseline;
+	margin: 0 auto;
+	padding: 0;
+	-webkit-touch-callout: none;
+
+	/* for fullscreen */
+  width:auto;
+  /* for fullscreen */
+}
+
+/* for fullscreen */
+#bodyWrapper{
+  width:950px;
+  margin:0 auto;
+  
+  overflow:hidden;
+  
+  -moz-transform-origin:center top;
+  -webkit-transform-origin:center top;
+  -o-transform-origin:center top;
+  transform-origin:center top 0;
+}
+
+#colorbox{
+  -moz-transform-origin:center top;
+  -webkit-transform-origin:center top;
+  -o-transform-origin:center top;
+  transform-origin:center top 0;
+}
+
+:-webkit-full-screen {
+  background:transparent;
+}
+/* for fullscreen */
+
+#footer{ 
+	width: 950px;
+	height: 30px;
+	background-image: url(../system/misc/footer.png);
+	background-repeat: no-repeat;
+	-moz-background-size: cover;
+	background-size: cover;
+	margin-top: 8px;
+	
+	display:none;
+}
+
+#footer.active{
+  display:block;
+}
+
+#mainArea{
+	/*
+	why is the screen clipped by the footer in the original?
+	*/
+	height: 712px;
+  overflow:hidden;
+  position:relative;
+}
+
+#textWindow{
+  z-index:2;
+  bottom: 0px;
+  width:950px;
+  height: 214px;
+  background:url(../system/misc/text_area_empty.png) 32px 23px no-repeat;
+  position: absolute;
+}
+#textWindow.originalBackground{
+  background:url(../system/misc/hs_window_txt.png) left 22px no-repeat;
+}
+#originalBackground{
+  margin-left:15px;
+}
+
+input[type="checkbox"]{
+  margin: 0;
+	vertical-align: middle;
+}
+
+#textWindowWrapper{
+	width: 950px;
+	height: 214px;
+	position: absolute;
+	bottom: 0px;
+	left:0;
+}
+
+#textAreaBackground{
+	background-color:#000000;
+	opacity:0.8;
+	z-index: 1;
+	bottom: 16px;
+	height: 168px;
+	position: absolute;
+	left: 37px;
+	right: 39px;
+}
+
+#textScroll{
+  height: 27px;
+  line-height: 27px;
+	position: absolute;
+	right: -15px;
+	top: 0;
+	margin-right:15px;
+	
+	width:400px;
+	overflow:hidden;
+}
+
+#musicButtonsWrapper{
+  position: absolute;
+  line-height: 36px;
+  height:39px;
+	left: 534px;
+	bottom: 0;
+	z-index:2;
+	font-family:arial,sans-serif;
+}
+
+#musicButtonsWrapper>img{
+  margin-left:10px;
+  cursor:pointer;
+}
+
+#music_prev{
+  vertical-align:middle;
+  width:32px;
+  height:27px;
+}
+#music_next{
+  vertical-align:middle;
+  width:32px;
+  height:27px;
+}
+#music_stop{
+  vertical-align:middle;
+  width:22px;
+  height:23px;
+}
+#music_play{
+  vertical-align:middle;
+  width:23px;
+  height:27px;
+}
+#music_loop{
+  vertical-align:middle;
+  width:28px;
+  height:27px;
+  opacity:0.5;
+}
+#music_loop.loop{
+  opacity:1;
+}
+
+#UIButtons>div{
+  z-index:10;
+}
+
+#textHolder{
+  font-size:24px;
+  padding-top:20px;
+  padding-left:220px;
+  line-height:125%;
+}
+
+#textArea{
+  height:180px;
+  color:white;
+  margin-top: 30px;
+  position: relative;
+  z-index: 4;
+}
+
+#textStatus{
+  z-index: 10;
+  left: 650px;
+  top: 170px;
+  position: absolute;
+  width: 25px;
+  height: 15px;
+  background-image: url(../system/misc/next.gif);
+  background-size: cover;
+}
+
+#screenArea{
+  height:100%;
+  position:relative;
+  z-index:1;
+}
+
+.noSelection{
+  -webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.mainImage{
+  position:absolute;
+  /*
+  top:0 is incorrect, should be bottom:0. see scene c70
+  top:0;
+  */
+  bottom:0;
+  left:0;
+}
+
+#skip_button{
+	background-image:url(../system/misc/hs_button03a.png);
+	left:864px;
+	top:56px;
+	width:86px;
+	height:86px;
+	position:absolute;
+	/* original */
+  cursor:pointer;
+}
+
+#end_button{
+  background-image:url(../system/misc/hs_button04.png);
+  left:772px;
+  top:125px;
+  width:86px;
+  height:86px;
+  position:absolute;
+	/* original */
+  cursor:pointer;
+  
+}
+#voice_button{
+  background-image:url(../system/misc/hs_button02a.png);
+  left:802px;
+  top:8px;
+  width:48px;
+  height:48px;
+  position:absolute;
+	/* original */
+  cursor:pointer;
+}
+#voice_button.off{
+  background-image:url(../system/misc/hs_button02b.png);
+}
+#window_button{
+  background-image:url(../system/misc/hs_button01.png);
+  left:855px;
+  top:0px;
+  width:48px;
+  height:48px;
+  position:absolute;
+	/* original */
+  cursor:pointer;
+}
+
+.hide{
+  display:none;
+}
+
+#skip_button.stop{
+  background-image: url(../system/misc/hs_button03b.png);
+}		
+			
+.effectWrapper{
+  background:url(../system/misc/scanline_effect.png) left top repeat-y;
+  background-size:100%;
+  position:absolute;
+	top: 4px;
+	left: 5px;
+	right: 5px;
+	bottom: 4px;
+  z-index:2;
+  
+}
+.effectWrapper2{
+  background:url(../system/misc/sceneBorder.png) left top no-repeat;
+  background-size:100%;
+  height:100%;
+  width:100%;
+  position:absolute;
+  top:0;
+  left:0;
+  z-index:3;
+  
+}
+.effectWrapper3{
+	box-shadow: 0px 0px 18px 6px black inset;
+	position: absolute;
+	top: 4px;
+	left: 5px;
+	right: 5px;
+	bottom: 4px;
+	z-index: 4;
+}
+
+.sceneWrapper{
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+  background:url(../system/misc/sceneBorder.png) left top no-repeat;
+  background-size: contain;
+}
+
+
+#sceneArea{
+	height: 712px;
+	overflow: hidden;
+	position: relative;
+	
+}
+
+#scenes{
+	overflow:auto;
+}
+
+.scene{
+	margin: 10px;
+	width: 209px;
+	height: 159px;
+	float: left;
+	position: relative;
+	cursor: pointer; 
+}
+
+.scene:hover{
+	-webkit-animation: glow 500ms ease-in 0s infinite alternate;
+     -moz-animation: glow 500ms ease-in 0s infinite alternate;
+       -o-animation: glow 500ms ease-in 0s infinite alternate;
+          animation: glow 500ms ease-in 0s infinite alternate;
+}
+
+@-webkit-keyframes glow { from { box-shadow: 0 0 5px #fff; } to { box-shadow: 0 0 15px #fff; }  }
+   @-moz-keyframes glow { from { box-shadow: 0 0 5px #fff; } to { box-shadow: 0 0 15px #fff; }  }
+     @-o-keyframes glow { from { box-shadow: 0 0 5px #fff; } to { box-shadow: 0 0 15px #fff; }  }
+        @keyframes glow { from { box-shadow: 0 0 5px #fff; } to { box-shadow: 0 0 15px #fff; }  }
+
+.sceneImage{
+  width:100%;
+}
+
+#h_scenes{
+	height: 712px;
+	overflow: hidden;
+	position: relative;
+  padding: 0 17px;
+  background:url(../system/bg/bg_10.png) left top no-repeat;
+}
+
+#cgWrapper{
+	height: 712px;
+	overflow: hidden;
+	position: relative;
+  background:url(../system/bg/bg_9.png) left top no-repeat;
+}
+
+#cg_list{
+	height: 712px;
+	overflow: hidden;
+	position: relative;
+	padding: 0 14px;
+  background:url(../system/bg/bg_8.png) left top no-repeat;
+}
+  
+#loading{
+  position:absolute; 
+  top:720px;
+  /*
+  transform:translateY(720px);
+  top:0;
+  */
+  left:0;
+  z-index:20;
+}
+
+.effect{
+  opacity:0;
+  height:100%;
+  width:100%;
+  position:absolute;
+  top:0;
+  left:0;
+  z-index:1;
+}
+
+.OUT{
+  
+}
+
+#prev{
+	width:63px;
+	position:absolute;
+	bottom:2px;
+	left:12px;
+	z-index:2;
+	cursor:pointer;
+}
+#next{
+	width:63px;
+	position:absolute;
+	bottom:2px;
+	right:12px;
+	z-index:2;
+	cursor:pointer;
+}
+#pageNr{
+	position:absolute;
+  bottom: 7px;
+  right: 108px;
+	z-index:2;
+	cursor:default;
+	color:#FFFFFF;
+	font-size: 25px;
+	line-height:1;
+}
+
+#mainMenu{
+	position: absolute;
+	z-index: 1;
+	height: 43px;
+	bottom:0;
+	left:0;
+	width:100%;
+	background-color:#161616;
+}
+#header{
+  position:relative;
+  z-index:1;
+  background:url(../system/misc/header_bg_pattern.png) left top repeat-x;
+  height:70px;
+  border-bottom:5px solid #dcdcdc;
+}
+
+#menuItemsWrapper{
+  padding:0 102px;
+  border-bottom: 5px solid #dcdcdc;
+  overflow:auto;
+}
+
+.menuItem{
+  background:url(../system/misc/menu_item_bg_pattern.png) left top repeat-x;
+	height: 36px;
+	line-height: 36px;
+	float: left;
+	cursor: pointer;
+	color:#FFFFFF;
+	font-weight:bold;
+	padding:7px 22px 0;
+}
+.menuItemWrapper{
+	/*
+	cursor: pointer;
+	*/
+	float: left;
+}
+
+.menuItemWrapper:hover .menuItem{
+	background:url(../system/misc/menu_item_bg_pattern_hover.png) left top repeat-x;
+}
+
+#menuItemBorderLeft{
+  background:url(../system/misc/menu_left_border.png) left top no-repeat;
+  width:42px;
+  height:43px;
+}
+#menuItemBorderRight{
+  background:url(../system/misc/menu_right_border.png) left top no-repeat;
+  width:42px;
+  height:43px;
+}
+.menuItemWrapper:hover #menuItemBorderLeft{
+  background:url(../system/misc/menu_left_border_hover.png) left top no-repeat;
+}
+.menuItemWrapper:hover #menuItemBorderRight{
+  background:url(../system/misc/menu_right_border_hover.png) left top no-repeat;
+}
+
+.totalNrOfCG{
+	position:absolute;
+	left: 13px;
+	bottom: 13px;
+	color:red;
+	font-weight:bold;
+	z-index:5;
+	font-size:16px;
+}
+#configWrapper{
+  width: 600px;
+	height: 690px;
+	border:1px solid #FFFFFF;
+	border-radius:12px;
+	display:none;         
+	background-color:rgba(0,0,0, 0.8);
+}
+
+.stylish{
+	color:#FFFFFF;
+	text-shadow: 0 0 4px #c86363,
+	 0 0 6px #a40000,
+	 0 0 8px #a40000,
+	 0 0 10px #a40000,
+	 0 0 12px #a40000,
+	 0 0 14px #a40000;
+	font-weight: bold;
+	font-family: "Lucida Grande", "segoe UI", Meiryo, Arial, sans-serif;
+}
+
+#configItemsWrapper{
+	/*
+	margin:0 18px 22px;
+	*/
+	margin:0 18px 0;
+}
+#configItemsWrapper>div{
+	overflow: auto;
+	/*
+	min-height: 30px;
+	*/
+	min-height: 23px;
+	padding: 10px 0 10px 8px;
+}
+#configItemsWrapper>div:first-child{
+	overflow: auto;
+	height: 40px;
+	padding-top: 0;
+}
+div#itemsWrapper{
+	float:left;
+	width:161px;
+	min-height:0;
+	padding:0;
+}
+
+#itemsWrapper>.items{
+	overflow: auto;
+	min-height: 30px;
+	padding: 10px 0 10px 8px;
+}
+
+#shortcuts{
+  float:left;
+  line-height:1.7;
+}
+
+#shortcuts>span{
+  width:125px;
+  display:inline-block;
+}
+
+#configSettingsWrapper{
+  background:url(../system/colorbox/config_bg.png) left top no-repeat;
+  
+  width: 535px;
+ 	height: 645px;
+ 	
+ 	padding-top: 24px;
+	margin: 0 auto;
+	background-size: contain;
+	
+  color: #FFFFFF;
+	font-weight: bold;
+}
+#configHeader{
+  color:#FFFFFF;
+  text-align:center;
+  font:bold 19px/39px Arial;
+}
+.sliderWrapper{
+	
+}
+.sliderWrapper>div{
+  float: left;
+  height: 20px;
+	line-height: 20px;
+	margin-left: 20px;
+}
+.sliderWrapper>div.nstSlider{
+  float: right;
+  height: 20px;
+	line-height: 20px;
+	margin-left: 20px;
+}
+.sliderWrapper>div:first-child{
+	margin-left: 0;
+}
+.pageWrapper{
+  display:none;
+}
+.pageWrapper.active{
+  display:block;
+}
+#loadingArea{
+  height: 712px;
+  background:url(../system/misc/top_page.png) left top no-repeat;
+  position:relative;
+  z-index:1;  
+}
+#loadingAreaImage{
+  height:100%;
+  width:100%;
+  background:url(../system/misc/top_page_inner_1.png) left top no-repeat;
+  position:absolute;
+  top:0;
+  left:0;
+  z-index:1;
+}
+
+#gameStart{
+  background:url(../system/misc/game_start.png) left top no-repeat;
+  width: 343px;
+ 	height: 90px;
+ 	position:absolute;
+ 	top:397px;
+ 	right:0;
+ 	z-index:101;
+ 	opacity:0;
+}
+    
+#gameStart.active{
+  cursor:pointer;
+}
+
+#gameStart.active:hover{
+  background:url(../system/misc/game_start_over.png) left top no-repeat;
+}
+
+/*
+#gameStart.gameStartHover{
+  background:url(../system/misc/game_start_over.png) left top no-repeat;
+  cursor:pointer;
+}
+*/
+
+#loadingAreaEffect{
+  height: 712px;
+  background:url(../system/misc/top_page.png) left top no-repeat;
+  position:relative;
+  z-index:5;
+}
+
+#top_chara_1{
+	width: 370px;
+	height: 436px;
+	background-image: url(../system/misc/top_chara_1.png);
+	background-repeat: no-repeat;
+	-moz-background-size: cover;
+	background-size: cover;
+	position: absolute;
+	top: 165px;
+	right: 0;
+	z-index: 8;
+	opacity:0;
+}
+#top_chara_2{
+	width: 364px;
+	height: 566px;
+	background-image: url(../system/misc/top_chara_2.png);
+	background-repeat: no-repeat;
+	-moz-background-size: cover;
+	background-size: cover;
+	position: absolute;
+	top: 10px;
+	right: 121px;
+	z-index: 7;
+	opacity:0;
+}
+#top_chara_3{
+	width: 295px;
+	height: 485px;
+	background-image: url(../system/misc/top_chara_3.png);
+	background-repeat: no-repeat;
+	-moz-background-size: cover;
+	background-size: cover;
+	position: absolute;
+	top: 0;
+	right: 0;
+	z-index: 6;
+	opacity:0;
+}
+#top_filter{
+	width: 100%;
+	height: 712px;
+	background-image: url(../system/misc/top_filter.png);
+	background-repeat: no-repeat;
+	-moz-background-size: cover;
+	background-size: cover;
+	position: absolute;
+	top: 0;
+	z-index: 99;
+}
+#logo{
+	width:251px;
+	height:205px;
+	background-image: url(../system/misc/logo.png);
+	background-repeat: no-repeat;
+	-moz-background-size: cover;
+	background-size: cover;
+	position: absolute;
+	top: 5px;
+	left: 5px;
+	z-index: 101;
+	opacity:0;
+}
+.colorPickerBox{
+  background:transparent;
+  border: none;
+  margin-left: 10px;
+}
+.colorPickerBox>.sp-dd{
+  display:none;
+}
+.containerColorPicker{
+  background:transparent;
+  border: none;
+}
+.containerColorPicker>.sp-picker-container{
+  border:none;
+}
+.backgroundColorPicker{
+  cursor:pointer;
+  margin-left:10px;
+  vertical-align: middle;
+}
+
+#choiceWrapper{
+  width:302px;
+  margin: 0 auto;
+  padding: 10px;
+  border: 1px solid rgb(255, 255, 255);
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.8);
+  position: absolute;
+  top: 240px;
+  left: 324px;
+  z-index:3;
+}
+
+.pathChoice{
+	font-size:20px;
+	color:#FFFFFF;
+	width:258px;
+	text-align:center;
+	margin:20px 10px;
+	padding:18px 10px;
+	border:1px solid #FFFFFF;
+	border-radius: 4px;
+	background: rgb(229,0,0);
+	background: -moz-linear-gradient(top, rgba(229,0,0,1) 0%, rgba(35,0,0,1) 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(229,0,0,1)), color-stop(100%,rgba(35,0,0,1)));
+	background: -webkit-linear-gradient(top, rgba(229,0,0,1) 0%,rgba(35,0,0,1) 100%);
+	background: -o-linear-gradient(top, rgba(229,0,0,1) 0%,rgba(35,0,0,1) 100%);
+	background: -ms-linear-gradient(top, rgba(229,0,0,1) 0%,rgba(35,0,0,1) 100%);
+	background: linear-gradient(to bottom, rgba(229,0,0,1) 0%,rgba(35,0,0,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e50000', endColorstr='#230000',GradientType=0 );
+	cursor:pointer;
+}
+
+.pathChoice:hover {
+  opacity: 0.6;
+  /* what? */
+  background-color:yellow;
+}
+
+#fontChangeSelectBoxItContainer{
+	color:#000000;
+	text-shadow:none;
+	margin-left:5px;
+}
+
+.selectboxit-list > .selectboxit-focus > .selectboxit-option-anchor{
+  color: #ffffff;
+  background-color: #d80d19;
+  background-image:none;
+  background-repeat: repeat-x;
+}
+
+/* Height and Vertical Alignment of Text */
+.selectboxit-container span, .selectboxit-container .selectboxit-options a{
+  height: 25px; /* Height of the drop down */
+  line-height: 25px; /* Vertically positions the drop down text */
+  display: block;
+}
+
+.selectboxit-default-arrow {
+  border-top: 4px solid #B60711;
+}
+
+#testText{
+  font-size:24px;
+  line-height:125%;
+  font-weight:normal;
+  text-shadow:none;
+  margin-top:10px;
+}
+
+.selectboxit-option-icon-url {
+  width: 20px;
+	background-size: 20px 20px;
+}
+
+#testFontsHiddenElement{
+  font-size:20px;
+  line-height:1.2;
+  /*
+  font-family:pureNonsenseFontx064Z8;
+  */
+  z-index:-999999999;
+  position:absolute;
+  left: 0px;
+  top: 0px;
+  visibility:hidden;
+}
+
+.selectboxit-container .selectboxit-options{
+  width:367px;
+}
+
+@font-face{
+	font-family: 'NonsenseFont6FzO0ds351s';
+	src: url('fonts/hakidame.woff') format('woff');
+         
+	font-weight: normal;
+	font-style: normal;
+}
+
+#history{
+	height:100%;
+  width:950px;
+  position:absolute;
+  top:0;
+  left:0;
+  z-index:3;
+  background-color:rgba(0, 0, 0, 0.8);
+  display:none;
+  overflow-y:scroll;
+}
+
+#history.show{
+  display:block;
+}
+
+.historyItem{
+  height: 164px;
+	color: white;
+	/*
+	margin-top: 30px;
+	*/
+	font-size: 24px;
+	padding-top: 20px;
+	padding-left: 220px;
+	line-height: 125%;
+}
+  
+.historyItem.voiced{
+  color:#fecbcb;
+}
+
+.historyItem.voiced:hover{
+  text-decoration:underline;
+  cursor:pointer;
+}
+
+/* to make the customized scrollbars on the history element always visible */
+.ps-container > .ps-scrollbar-x-rail, .ps-container > .ps-scrollbar-y-rail {
+	opacity: 0.6;
+	background-color: #5b5b5b;
+}
+
+.ps-container:hover > .ps-scrollbar-y-rail:hover {
+	background-color: #5b5b5b;
+	opacity: 0.8;
+}
+
+.ps-container > .ps-scrollbar-y-rail.in-scrolling {
+	background-color: #5b5b5b;
+	opacity: 0.8;
+}
+
+.ps-container:hover > .ps-scrollbar-y-rail.in-scrolling {
+	background-color: #5b5b5b;
+	opacity: 0.8;
+}
+
+.ps-container:hover > .ps-scrollbar-x-rail, .ps-container:hover > .ps-scrollbar-y-rail{
+  opacity: 0.8;
+}
+
+.ps-container > .ps-scrollbar-y-rail > .ps-scrollbar-y{
+  background-color:#FFFFFF;
+}
+
+.ps-container:hover > .ps-scrollbar-y-rail:hover > .ps-scrollbar-y{
+  background-color:#FFFFFF;
+}
+
+/* */
+
+/* Wrapper to place preloaded content into so that they get decoded in firefox */
+#preloadWrapper, #preloadWrapperPermanent{
+	position:relative;
+  height:0;
+  /* doesn't work when overflow:hidden is set on the wrapper element, so it is set on the bodyWrapper element instead */
+  /*
+  overflow:hidden;
+  */
+}
+
+/* style that must trigger decoding in firefox */
+.preloadImage{
+	position:absolute;
+	top:0;
+	left:0;
+	
+	visibility:hidden;	
+	
+	z-index:-1000;
+}
+
+#copySelectionHelper{
+  /* cannot use display:none or overflow:hidden */
+	height:0;
+}
+
+@media screen and (max-height: 825px) {
+  /* Remove the footer to allow for more screen space for small screens */
+	#footer.active{
+	  display:none;
+	}
+	
+}
+
+
+
+
+
+
